@@ -1,0 +1,27 @@
+package s4.biblio.services;
+
+import org.springframework.stereotype.Service;
+
+import s4.biblio.form.DepenseForm;
+import s4.biblio.form.VenteForm;
+import s4.biblio.models.Depense;
+import s4.biblio.models.TypeVente;
+import s4.biblio.models.Vente;
+import s4.biblio.repositories.DepenseRepository;
+import s4.biblio.repositories.TypeVenteRepository;
+import s4.biblio.repositories.VenteRepository;
+
+import java.util.List;
+
+@Service
+public class TypeVenteService {
+    private final TypeVenteRepository typeVenteRepository;
+
+    public TypeVenteService(TypeVenteRepository typeVenteRepository) {
+        this.typeVenteRepository = typeVenteRepository;
+    }
+    public List<TypeVente> getAllTypeVentes() {
+        return typeVenteRepository.findAll();
+    }
+
+}

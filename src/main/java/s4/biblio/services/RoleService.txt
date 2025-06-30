@@ -1,0 +1,23 @@
+package s4.biblio.services;
+
+
+import org.springframework.stereotype.Service;
+
+import s4.biblio.models.Client;
+import s4.biblio.repositories.ClientRepository;
+import s4.biblio.repositories.RoleRepository;
+
+import java.util.List;
+
+
+@Service
+public class RoleService {
+    private final RoleRepository roleRepository;
+
+    public RoleService(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
+    public List<s4.biblio.models.Role> getAllRoles() {
+        return roleRepository.findAll();
+    }
+}

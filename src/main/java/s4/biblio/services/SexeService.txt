@@ -1,0 +1,23 @@
+package s4.biblio.services;
+
+
+import org.springframework.stereotype.Service;
+
+import s4.biblio.models.Client;
+import s4.biblio.models.Sexe;
+import s4.biblio.repositories.ClientRepository;
+import s4.biblio.repositories.SexeRepository;
+
+import java.util.List;
+
+@Service
+public class SexeService {
+    private final SexeRepository sexeRepository;
+
+    public SexeService(SexeRepository sexeRepository) {
+        this.sexeRepository = sexeRepository;
+    }
+    public List<Sexe> getAllSexes() {
+        return sexeRepository.findAll();
+    }
+}

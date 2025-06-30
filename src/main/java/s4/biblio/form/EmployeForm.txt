@@ -1,0 +1,46 @@
+package s4.biblio.form;
+
+import lombok.Getter;
+import lombok.Setter;
+import s4.biblio.models.Departement;
+import s4.biblio.models.Role;
+import s4.biblio.models.Sexe;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+@Getter
+@Setter
+public class EmployeForm {
+    private Integer id;
+    private String nom;
+    private String prenom;
+    private LocalDate dtn;
+    private Sexe sexe;
+    private String email;
+    private String mdp;
+    private LocalDate dateEmbauche;
+    private Role role;
+    private Boolean actif = true;
+
+    @Override
+    public String toString() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append("EmployeForm {\n");
+        sb.append("  id=").append(id).append(",\n");
+        sb.append("  nom='").append(nom).append("',\n");
+        sb.append("  prenom='").append(prenom).append("',\n");
+        sb.append("  dtn=").append(dtn != null ? dtn.format(dateFormatter) : "null").append(",\n");
+        sb.append("  sexe=").append(sexe != null ? sexe.getLibelle() : "null").append(",\n");
+        sb.append("  email='").append(email).append("',\n");
+        sb.append("  mdp='").append(mdp != null ? "******" : "null").append("',\n");
+        sb.append("  dateEmbauche=").append(dateEmbauche != null ? dateEmbauche.format(dateFormatter) : "null").append(",\n");
+        sb.append("  role=").append(role != null ? role.getDescription() : "null").append(",\n");
+        sb.append("  actif=").append(actif).append("\n");
+        sb.append("}");
+        
+        return sb.toString();
+    }
+}

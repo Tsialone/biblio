@@ -1,0 +1,33 @@
+package s4.biblio.services;
+
+
+import org.springframework.stereotype.Service;
+
+import s4.biblio.form.DepenseForm;
+import s4.biblio.models.Depense;
+import s4.biblio.repositories.DepenseRepository;
+
+import java.util.List;
+
+@Service
+public class DepenseService {
+    private final DepenseRepository depenseRepository;
+
+    public DepenseService(DepenseRepository depenseRepository) {
+        this.depenseRepository = depenseRepository;
+    }
+    public List<Depense> getAllDepenses() {
+        return depenseRepository.findAll();
+    }
+    public void saveDepense(DepenseForm depenseForm) {
+        Depense depense = new Depense();
+        depense.setId(depenseForm.getId());
+        depense.setCategorie(depenseForm.getCategorie());
+        depense.setDateDepense(depenseForm.getDateDepense());
+        depense.setDescription(depenseForm.getDescription());
+        depense.setEmploye(depenseForm.getEmploye());
+        depense.setMontant(depenseForm.getMontant());
+        depense.setValidation(depenseForm.getValidation());
+        this.depenseRepository.save(depense);
+    }
+}

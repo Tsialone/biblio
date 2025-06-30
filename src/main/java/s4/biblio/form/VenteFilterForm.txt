@@ -1,0 +1,30 @@
+package s4.biblio.form;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import lombok.Getter;
+import lombok.Setter;
+import s4.biblio.models.TypeVente;
+
+@Getter
+@Setter
+public class VenteFilterForm {
+    private LocalDate dateDebut;
+    private LocalDate dateFin;
+    private TypeVente typeVente;
+
+    @Override
+    public String toString() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("VenteFilterForm {\n");
+        sb.append("  dateDebut=").append(dateDebut != null ? dateDebut.format(dateFormatter) : "null").append(",\n");
+        sb.append("  dateFin=").append(dateFin != null ? dateFin.format(dateFormatter) : "null").append(",\n");
+        sb.append("  typeVenteId=").append(typeVente != null ? typeVente.getId() : "null").append(",\n");
+        sb.append("}");
+
+        return sb.toString();
+    }
+}

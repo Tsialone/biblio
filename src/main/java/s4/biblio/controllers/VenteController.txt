@@ -1,0 +1,89 @@
+package s4.biblio.controllers;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import s4.biblio.form.DepenseForm;
+import s4.biblio.form.VenteFilterForm;
+import s4.biblio.form.VenteForm;
+import s4.biblio.models.Depense;
+import s4.biblio.models.Employe;
+import s4.biblio.models.TypeVente;
+import s4.biblio.models.Vente;
+import s4.biblio.services.*;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+@Controller
+@RequestMapping("/vente")
+public class VenteController {
+
+    private final TypeVenteService typeVenteService;
+    private final DepenseService depenseService;
+    private final EmployeService employeService;
+    private final VenteService venteService;
+    private final ClientService clientService;
+
+    public VenteController(DepenseService depenseService, EmployeService employeService, VenteService venteService,
+            ClientService clientService, TypeVenteService typeVenteService) {
+        this.depenseService = depenseService;
+        this.employeService = employeService;
+        this.clientService = clientService;
+        this.venteService = venteService;
+        this.typeVenteService = typeVenteService;
+    }
+
+    @GetMapping("/form")
+    public ModelAndView getDepenseForm() {
+        ModelAndView mv = new ModelAndView("template");
+        mv.addObject("content", "vente/vente-form.jsp");
+
+        mv.addObject("clients", clientService.getAllClients());
+        mv.addObject("typesVente", typeVenteService.getAllTypeVentes());
+        mv.addObject("employes", employeService.getAllEmployes());
+
+        return mv;
+    }
+
+    @PostMapping("/save")
+    public String postMethodName(@ModelAttribute VenteForm venteForm, RedirectAttributes redirectAttributes) {
+        try {
+            System.out.println(venteForm.toString());
+            venteForm.setMontantTotal(venteForm.getPrixUnitaire() * venteForm.getQuantite());
+            venteService.save(venteForm);
+            redirectAttributes.addFlashAttribute("message", "Vente enregistrée avec succès !");
+            redirectAttributes.addFlashAttribute("messageType", "success");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            redirectAttributes.addFlashAttribute("message", "Erreur lors de l'enregistrement !");
+            redirectAttributes.addFlashAttribute("messageType", "danger");
+        }
+        return "redirect:/vente/form";
+    }
+
+    @GetMapping("/liste")
+    public ModelAndView getVenteListe(@ModelAttribute VenteFilterForm venteFilterForm) {
+        
+        ModelAndView mv = new ModelAndView("template");
+        mv.addObject("content", "vente/vente-liste.jsp");
+
+
+        mv.addObject("typesVente", typeVenteService.getAllTypeVentes());
+        List<Vente> vente_filtred = venteService.getByVenteFilterForm(venteFilterForm);
+        mv.addObject("ventes", vente_filtred);
+        return mv;
+    }
+    
+
+}

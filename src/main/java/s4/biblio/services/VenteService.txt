@@ -1,0 +1,71 @@
+package s4.biblio.services;
+
+import org.springframework.stereotype.Service;
+
+import s4.biblio.form.DepenseForm;
+import s4.biblio.form.VenteFilterForm;
+import s4.biblio.form.VenteForm;
+import s4.biblio.models.Depense;
+import s4.biblio.models.TypeVente;
+import s4.biblio.models.Vente;
+import s4.biblio.repositories.DepenseRepository;
+import s4.biblio.repositories.VenteRepository;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class VenteService {
+    private final VenteRepository venteRepository;
+
+    public VenteService(VenteRepository venteRepository) {
+        this.venteRepository = venteRepository;
+    }
+
+    public List<Vente> getAllVentes() {
+        return venteRepository.findAll();
+    }
+
+    public void save(VenteForm venteForm) {
+        Vente vente = new Vente();
+        vente.setClient(venteForm.getClient());
+        vente.setTypeVente(venteForm.getTypeVente());
+        vente.setQuantite(venteForm.getQuantite());
+        vente.setPrixUnitaire(venteForm.getPrixUnitaire());
+        vente.setMontantTotal(venteForm.getMontantTotal());
+        vente.setDateVente(venteForm.getDateVente());
+        vente.setEmploye(venteForm.getEmploye());
+        vente.setPaye(venteForm.getPaye());
+        vente.setDatePayment(venteForm.getDatePayment());
+        if (venteForm.getPaye())
+            vente.setDatePayment(venteForm.getDateVente());
+        vente.setValidation(false);
+        venteRepository.save(vente);
+    }
+
+    public List<Vente> getByVenteFilterForm(VenteFilterForm form) {
+        LocalDate debut = form.getDateDebut();
+        LocalDate fin = form.getDateFin();
+        TypeVente typeVente = form.getTypeVente();
+
+        if (debut != null && fin != null && typeVente != null) {
+            return venteRepository.findByDateVenteBetweenAndTypeVente(debut, fin, typeVente);
+        } else if (debut != null && typeVente != null) {
+            return venteRepository.findByDateVenteGreaterThanEqualAndTypeVente(debut, typeVente);
+        } else if (fin != null && typeVente != null) {
+            return venteRepository.findByDateVenteLessThanEqualAndTypeVente(fin, typeVente);
+        } else if (typeVente != null) {
+            return venteRepository.findByTypeVente(typeVente);
+        } else if (debut != null && fin != null) {
+            return venteRepository.findByDateVenteBetween(debut, fin);
+        } else if (debut != null) {
+            return venteRepository.findByDateVenteGreaterThanEqual(debut);
+        } else if (fin != null) {
+            return venteRepository.findByDateVenteLessThanEqual(fin);
+        } else {
+            return venteRepository.findAll();
+        }
+    }
+
+}

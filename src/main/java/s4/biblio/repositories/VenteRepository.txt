@@ -1,0 +1,33 @@
+package s4.biblio.repositories;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import s4.biblio.models.Employe;
+import s4.biblio.models.TypeVente;
+import s4.biblio.models.Vente;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface VenteRepository extends JpaRepository<Vente, Integer> {
+    List<Vente> findByDateVenteBetween(LocalDate startDate, LocalDate endDate);
+
+    List<Vente> findByDateVenteGreaterThanEqual(LocalDate date);
+
+    List<Vente> findByDateVenteLessThanEqual(LocalDate date);
+
+    List<Vente> findByTypeVente(TypeVente typeVente);
+
+    List<Vente> findByDateVenteBetweenAndTypeVente(LocalDate debut, LocalDate fin, TypeVente typeVente);
+
+    List<Vente> findByDateVenteLessThanEqualAndTypeVente(LocalDate fin, TypeVente typeVente);
+
+    List<Vente> findByDateVenteGreaterThanEqualAndTypeVente(LocalDate debut, TypeVente typeVente);
+
+
+}

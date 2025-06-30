@@ -1,0 +1,21 @@
+package s4.biblio.services;
+
+
+import org.springframework.stereotype.Service;
+
+import s4.biblio.models.Departement;
+import s4.biblio.repositories.DepartementRepository;
+
+import java.util.List;
+
+@Service
+public class DepartementService {
+    private final DepartementRepository departementRepository;
+
+    public DepartementService(DepartementRepository departementRepository) {
+        this.departementRepository = departementRepository;
+    }
+    public List<Departement> getAllDepartements() {
+        return departementRepository.findAll();
+    }
+}

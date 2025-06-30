@@ -1,0 +1,42 @@
+package s4.biblio.form;
+
+import lombok.Getter;
+import lombok.Setter;
+import s4.biblio.models.Departement;
+import s4.biblio.models.Sexe;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+@Getter
+@Setter
+public class EmployeFilterForm {
+    private LocalDate dateEmbaucheDebut;
+    private LocalDate dateEmbaucheFin;
+    private String nom;
+    private Sexe sexe;
+    private Departement departement;
+    private Boolean actif; 
+
+    @Override
+    public String toString() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return String.format(
+            "EmployeFilterForm {\n" +   
+            "  dateEmbaucheDebut=%s,\n" +
+            "  dateEmbaucheFin=%s,\n" +
+            "  nom='%s',\n" +
+            "  sexe=%s,\n" +
+            "  departement=%s,\n" +
+            "  actif=%s,\n" +  
+            "}",
+            dateEmbaucheDebut != null ? dateEmbaucheDebut.format(dateFormatter) : "null",
+            dateEmbaucheFin != null ? dateEmbaucheFin.format(dateFormatter) : "null",
+            nom != null ? nom : "null",
+            sexe != null ? sexe.getLibelle() : "null",
+            departement != null ? departement.getNom() : "null",
+            actif != null ? actif : "null" 
+        );
+    }
+
+}

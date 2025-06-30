@@ -1,0 +1,2 @@
+faire mvn clean install pour installer les package
+mvn sring-boot:run pour demarer le serveur

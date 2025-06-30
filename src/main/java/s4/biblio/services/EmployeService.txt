@@ -1,0 +1,54 @@
+package s4.biblio.services;
+
+import org.springframework.stereotype.Service;
+
+import s4.biblio.form.DepenseForm;
+import s4.biblio.form.EmployeFilterForm;
+import s4.biblio.form.EmployeForm;
+import s4.biblio.models.Departement;
+import s4.biblio.models.Depense;
+import s4.biblio.models.Employe;
+import s4.biblio.models.Sexe;
+import s4.biblio.repositories.EmployeRepository;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@Service
+public class EmployeService {
+    private final EmployeRepository employeRepository;
+
+    public EmployeService(EmployeRepository employeRepository) {
+        this.employeRepository = employeRepository;
+    }
+
+    public List<Employe> getAllEmployes() {
+        return employeRepository.findAll();
+    }
+
+    public void saveEmploye(EmployeForm employeForm) {
+        Employe employe = new Employe();
+        employe.setId(employeForm.getId());
+        employe.setNom(employeForm.getNom());
+        employe.setPrenom(employeForm.getPrenom());
+        employe.setDateNaissance(employeForm.getDtn());
+        employe.setEmail(employeForm.getEmail());
+        employe.setSexe(employeForm.getSexe());
+        employe.setMdp(employeForm.getMdp());
+        employe.setDateEmbauche(employeForm.getDateEmbauche());
+        employe.setRole(employeForm.getRole());
+        employe.setActif(employe.getActif());
+
+        this.employeRepository.save(employe);
+    }
+
+    public List<Employe> getByEmployeFilterForm(EmployeFilterForm form) {
+        LocalDate debut = form.getDateEmbaucheDebut();
+        LocalDate fin = form.getDateEmbaucheFin();
+        String nom = form.getNom();
+        Sexe sexe = form.getSexe();
+        Departement departement = form.getDepartement();
+        Boolean actif = form.getActif();
+        return this.employeRepository.findByCompleteFilter(debut, fin, nom, sexe, departement, actif);
+    }
+}

@@ -1,0 +1,48 @@
+package s4.biblio.form;
+
+import lombok.Getter;
+import lombok.Setter;
+import s4.biblio.models.Client;
+import s4.biblio.models.Employe;
+import s4.biblio.models.TypeVente;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+@Getter
+@Setter
+public class VenteForm {
+    private Integer id;
+    private Client client;
+    private TypeVente typeVente;
+    private Double quantite;
+    private Double prixUnitaire;
+    private Double montantTotal;
+    private LocalDate dateVente;
+    private Employe employe;
+    private Boolean paye = false;
+    private LocalDate datePayment;
+    private Boolean validation = false;
+
+    @Override
+    public String toString() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append("VenteForm {\n");
+        sb.append("  id=").append(id).append(",\n");
+        sb.append("  client=").append(client != null ? client.getNom() : "null").append(",\n");
+        sb.append("  typeVente=").append(typeVente != null ? typeVente.getProduit() : "null").append(",\n");
+        sb.append("  quantite=").append(quantite).append(",\n");
+        sb.append("  prixUnitaire=").append(prixUnitaire).append(",\n");
+        sb.append("  montantTotal=").append(montantTotal).append(",\n");
+        sb.append("  dateVente=").append(dateVente != null ? dateVente.format(dateFormatter) : "null").append(",\n");
+        sb.append("  employe=").append(employe != null ? employe.getNom() + " " + employe.getPrenom() : "null").append(",\n");
+        sb.append("  paye=").append(paye).append(",\n");
+        sb.append("  datePayment=").append(datePayment != null ? datePayment.format(dateFormatter) : "null").append(",\n");
+        sb.append("  validation=").append(validation).append("\n");
+        sb.append("}");
+        
+        return sb.toString();
+    }
+}

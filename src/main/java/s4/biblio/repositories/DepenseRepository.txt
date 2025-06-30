@@ -1,0 +1,31 @@
+package s4.biblio.repositories;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import s4.biblio.models.Depense;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface DepenseRepository extends JpaRepository<Depense, Long> {
+
+    @Query("SELECT d FROM Depense d WHERE d.dateDepense BETWEEN :start AND :end")
+    List<Depense> findByPeriod(@Param("start") LocalDate start,
+            @Param("end") LocalDate end);
+
+    List<Depense> findByCategorie(String categorie);
+
+    @Query("SELECT d FROM Depense d WHERE d.employe.id = :employeId")
+    List<Depense> findByEmployeId(@Param("employeId") Long employeId);
+
+    List<Depense> findByValidation(Boolean validation);
+
+    @Query("SELECT SUM(d.montant) FROM Depense d WHERE d.dateDepense BETWEEN :start AND :end")
+    Optional<Double> sumMontantByPeriod(@Param("start") LocalDate start,
+            @Param("end") LocalDate end);
+}
