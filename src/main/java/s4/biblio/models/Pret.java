@@ -31,13 +31,12 @@ public class Pret {
     @JoinColumn(name = "id_categorie")
     private Categorie categorie;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_histo_statut")
-    private HistoStatut histoStatut;
-    
     @OneToMany(mappedBy = "pret", fetch = FetchType.LAZY)
     private List<Reservation> reservations;
     
     @OneToMany(mappedBy = "pret", fetch = FetchType.LAZY)
     private List<Penalite> penalites;
+
+    @OneToMany(mappedBy = "pret", fetch = FetchType.LAZY)
+    private List<HistoStatut> histoStatuts;
 }

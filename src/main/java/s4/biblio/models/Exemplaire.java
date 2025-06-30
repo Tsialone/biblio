@@ -20,12 +20,12 @@ public class Exemplaire {
     @JoinColumn(name = "id_livre")
     private Livre livre;
     
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_histo_statut")
-    private HistoStatut histoStatut;
-    
     private Date date_acquisition;
     
     @OneToMany(mappedBy = "exemplaire", fetch = FetchType.LAZY)
     private List<Pret> prets;
+
+    @OneToMany(mappedBy = "exemplaire", fetch = FetchType.LAZY)
+    private List<HistoStatut> histoStatuts;
+
 }

@@ -25,13 +25,13 @@ public class Utilisateur {
     @JoinColumn(name = "id_categorie")
     private Categorie categorie;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_histo_statut")
-    private HistoStatut histoStatut;
     
     @OneToMany(mappedBy = "utilisateur", fetch = FetchType.LAZY)
     private List<Abonnement> abonnements;
     
     @OneToMany(mappedBy = "adherant", fetch = FetchType.LAZY)
     private List<Pret> prets;
+
+    @OneToMany(mappedBy = "utilisateur", fetch = FetchType.LAZY)
+    private List<HistoStatut> histoStatuts;
 }
