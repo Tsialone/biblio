@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -40,10 +41,21 @@ public class UtilisateurController {
     }
 
     @PostMapping("login/verify")
-    public ModelAndView verifyLogin() {
-        ModelAndView mv = new ModelAndView("pages/login");
+    public String verifyLogin(@RequestParam("email") String email, @RequestParam("mdp") String mdp,
+            RedirectAttributes redirectAttributes) {
 
-        return mv;
+        Utilisateur find = utilisateurService.getByEmailAndMdp(email, mdp);
+        if (find == null) {
+            redirectAttributes.addFlashAttribute("message", "Mot de passe ou utilisateur non trouver");
+            redirectAttributes.addFlashAttribute("message_type", "danger");
+        }
+        else {
+             redirectAttributes.addFlashAttribute("message", "Bonjour");
+            redirectAttributes.addFlashAttribute("message_type", "success");
+        }
+
+        return "redirect:/utilisateur/login";
+
     }
 
     @GetMapping("inscription")

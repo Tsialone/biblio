@@ -1,5 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+String message = (String) request.getAttribute("message");
+String message_type = (String) request.getAttribute("message_type");
+String alertClass = "alert-" + (message_type != null ? message_type : "info");
 
+%>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -14,7 +19,7 @@
   <div class="bg-white p-4 p-md-5 rounded shadow-sm w-100" style="max-width: 400px;">
     <h2 class="text-center fw-bold mb-4 text-secondary fs-4">Connexion</h2>
 
-    <form action="/utilisateur/verify" method="POST" class="needs-validation" novalidate>
+    <form action="/utilisateur/login/verify" method="POST" class="needs-validation" novalidate>
       
       <div class="mb-3">
         <label for="email" class="form-label fw-medium">Email</label>
@@ -35,7 +40,7 @@
         <input
           type="password"
           id="password"
-          name="password"
+          name="mdp"
           class="form-control"
           placeholder="Entrez votre mot de passe"
           required
@@ -50,15 +55,16 @@
         <a href="/utilisateur/inscription" class="text-primary fw-semibold">Inscription</a>
       </div>
       <br/>
-
+  <% if (message != null) { %>
+        <div class="alert <%= alertClass %> alert-dismissible fade show">
+            <%= message %>
+        </div>
+    <% } %>
 
       <button type="submit" class="btn btn-primary w-100 fw-semibold">
         Se connecter
       </button>
-      <p class="text-danger text-center mt-3" id="error-message">
-        Identifiants incorrects.
-      </p>
-
+     
     </form>
   </div>
 
