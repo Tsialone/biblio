@@ -12,10 +12,40 @@
 <body class="bg-light d-flex align-items-center justify-content-center min-vh-100">
 
   <div class="bg-white p-4 p-md-5 rounded shadow-sm w-100" style="max-width: 400px;">
-    <h2 class="text-center fw-bold mb-4 text-secondary fs-4">Connexion</h2>
+    <h2 class="text-center fw-bold mb-4 text-secondary fs-4">Inscription</h2>
 
     <form action="/utilisateur/verify" method="POST" class="needs-validation" novalidate>
       
+
+      <div class="mb-3">
+        <label for="email" class="form-label fw-medium">Nom</label>
+        <input
+          type="nom"
+          id="nom"
+          name="nom"
+          class="form-control"
+          placeholder="Ex: Bobou"
+          required
+        />
+        <div class="invalid-feedback">
+          Veuillez entrer votre nom.
+        </div>  
+
+
+        <div class="mb-3">
+        <label for="email" class="form-label fw-medium">Prenom</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="form-control"
+          placeholder="Ex: Babakoto"
+          required
+        />
+        <div class="invalid-feedback">
+          Veuillez entrer votre prenom.
+        </div>
+
       <div class="mb-3">
         <label for="email" class="form-label fw-medium">Email</label>
         <input
@@ -23,11 +53,39 @@
           id="email"
           name="email"
           class="form-control"
-          placeholder="Entrez votre email"
+          placeholder="Ex: tsialone1902@gmail.com"
           required
         />
         <div class="invalid-feedback">
           Veuillez entrer votre email.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label fw-large">Tel</label>
+        <input
+          type="tel"
+          id="tel"
+          name="tel"
+          class="form-control"
+          placeholder="Ex: 0387588451"
+          required
+        />
+        <div class="invalid-feedback">
+          Veuillez entrer votre email.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label fw-large">Addresse</label>
+        <input
+          type="tel"
+          id="tel"
+          name="tel"
+          class="form-control"
+          placeholder="Ex: Analamanga"
+          required
+        />
+        <div class="invalid-feedback">
+          Votre addresse.
         </div>
       </div>
       <div class="mb-4">
@@ -37,7 +95,7 @@
           id="password"
           name="password"
           class="form-control"
-          placeholder="Entrez votre mot de passe"
+          placeholder="Ex: 239higon3riq3j9h3i2qofji3"
           required
         />
         <div class="invalid-feedback">
@@ -46,8 +104,8 @@
       </div>
       
       <div class="text-center mt-3">
-        <span>Pas encore inscrit ?</span>
-        <a href="/utilisateur/inscription" class="text-primary fw-semibold">Inscription</a>
+        <span>Deja inscrit ?</span>
+        <a href="/utilisateur/login" class="text-primary fw-semibold">Login</a>
       </div>
       <br/>
 

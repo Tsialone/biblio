@@ -4,9 +4,10 @@ package s4.biblio.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import s4.biblio.models.Client;
+import s4.biblio.models.Utilisateur;
+
 
 @Repository
-public interface ClientRepository extends JpaRepository<Client, Integer> {
+public interface UtilisateurRepository extends JpaRepository<Utilisateur, Integer> {
     
 }

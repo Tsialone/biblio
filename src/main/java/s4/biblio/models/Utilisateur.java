@@ -26,8 +26,8 @@ public class Utilisateur {
     private Categorie categorie;
     
     
-    @OneToMany(mappedBy = "utilisateur", fetch = FetchType.LAZY)
-    private List<Abonnement> abonnements;
+    // @OneToMany(mappedBy = "utilisateur", fetch = FetchType.LAZY)
+    // private List<Abonnement> abonnements;
     
     @OneToMany(mappedBy = "adherant", fetch = FetchType.LAZY)
     private List<Pret> prets;

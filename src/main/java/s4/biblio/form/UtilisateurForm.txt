@@ -17,11 +17,7 @@ public class UtilisateurForm {
     private String tel;
     private String adresse;
     private Category categorie;
+
     
 
-    private String description;
-    private Double montant;
-    private LocalDate dateDepense;
-    private Employe employe;  
-    private Boolean validation =false;
 }

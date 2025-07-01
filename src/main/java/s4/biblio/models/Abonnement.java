@@ -16,9 +16,15 @@ public class Abonnement {
     private Integer id;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_utilisateur")
-    private Utilisateur utilisateur;
+    @JoinColumn(name = "id_categorie_utilisateur")
+    private Categorie categorieUtilisateur;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_categorie")
+    private Categorie categorie;
     
+    private float cotisation;
+
     private Date date_debut;
     private Date date_fin;
 }
