@@ -16,26 +16,27 @@ public class Utilisateur {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    
+
     private String nom;
     private String prenom;
     private String email;
     private String mdp;
     private String tel;
     private String adresse;
-    private LocalDate dateNaissance ;
-    
+    private LocalDate dateNaissance;
+
     @ManyToOne(fetch = FetchType.LAZY)
-@JoinColumn(name = "id_categorie")
+    @JoinColumn(name = "id_categorie")
     private Categorie categorie;
-    
-    
-    // @OneToMany(mappedBy = "utilisateur", fetch = FetchType.LAZY)
-    // private List<Abonnement> abonnements;
-    
+
+    @OneToMany(mappedBy = "adherant", fetch = FetchType.LAZY)
+    private List<Abonnement> abonnements;
+
     @OneToMany(mappedBy = "adherant", fetch = FetchType.LAZY)
     private List<Pret> prets;
 
     @OneToMany(mappedBy = "utilisateur", fetch = FetchType.LAZY)
     private List<HistoStatut> histoStatuts;
+
+    
 }

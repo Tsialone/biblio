@@ -2,10 +2,12 @@ package s4.biblio.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
-@Table(name = "abonement")
+@Table(name = "abonnement")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,14 +18,16 @@ public class Abonnement {
     private Integer id;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_categorie_utilisateur")
-    private Categorie categorieUtilisateur;
+    @JoinColumn(name = "id_adherant")
+    private Utilisateur adherant;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_categorie")
     private Categorie categorie;
     
 
-    private Date date_debut;
-    private Date date_fin;
+    private LocalDate dateDebut;
+    private LocalDate dateFin;
+
+    
 }

@@ -2,9 +2,11 @@ package s4.biblio.services;
 
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import ch.qos.logback.classic.pattern.Util;
 import s4.biblio.form.UtilisateurForm;
+import s4.biblio.models.Abonnement;
+import s4.biblio.models.E_Abonnement;
 import s4.biblio.models.E_TypeStatut;
 import s4.biblio.models.HistoStatut;
 import s4.biblio.models.Statut;
@@ -15,17 +17,21 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@Transactional
 public class UtilisateurService {
     private final UtilisateurRepository repository;
     private final StatutService statutService;
     private final HistoStatutService histoStatutService;
+    private final AbonnementService abonnementService;
 
 
 
-    public UtilisateurService(UtilisateurRepository repository , StatutService statutService , HistoStatutService histoStatutService) {
+
+    public UtilisateurService(UtilisateurRepository repository , StatutService statutService , HistoStatutService histoStatutService  ,AbonnementService abonnementService) {
         this.repository = repository;
         this.statutService = statutService;
         this.histoStatutService = histoStatutService;
+        this.abonnementService = abonnementService;
     }
     public List<Utilisateur> getAll() {
         return repository.findAll();
@@ -59,4 +65,16 @@ public class UtilisateurService {
     public Utilisateur getByEmail (String email) {
         return this.repository.findByEmail(email);
     }
+
+    public E_Abonnement getEtatAbonnement (Utilisateur utilisateur) {
+        List<Abonnement> his_abonnements =   abonnementService.getByAdherant(utilisateur);
+        Abonnement current_abonnement = abonnementService.getByAdherantDate(LocalDate.now(), utilisateur);
+        if (his_abonnements.isEmpty()) {
+            return E_Abonnement.non_abonne;
+        }
+        if (current_abonnement == null) {
+            return E_Abonnement.expire;
+        }
+        return E_Abonnement.en_cours;
+    } 
 }

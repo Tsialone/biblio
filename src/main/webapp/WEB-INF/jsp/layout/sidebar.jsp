@@ -1,5 +1,5 @@
 <aside class="bg-white shadow-sm d-none d-md-block" style="width: 16rem;">
-  <div class="p-4 border-bottom fw-bold fs-5">Gestion Ticket</div>
+  <div class="p-4 border-bottom fw-bold fs-5">Biblio ko</div>
 
   <nav class="p-3">
     <div class="mb-4">
@@ -13,9 +13,10 @@
       <a href="/tickets/performances" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Performance</a>
     </div>
     <div>
-      <h3 class="text-muted text-uppercase small fw-semibold mb-2">Message</h3>
-      <a href="/tickets/tickets_report" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Report</a>
+      <h3 class="text-muted text-uppercase small fw-semibold mb-2">Abonnement</h3>
+      <a href="/tickets/tickets_report" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Renouveler</a>
     </div>
+    
   </nav>
 </aside>
 

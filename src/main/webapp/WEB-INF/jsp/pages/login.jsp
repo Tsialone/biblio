@@ -60,7 +60,6 @@ String alertClass = "alert-" + (message_type != null ? message_type : "info");
             <%= message %>
         </div>
     <% } %>
-
       <button type="submit" class="btn btn-primary w-100 fw-semibold">
         Se connecter
       </button>
