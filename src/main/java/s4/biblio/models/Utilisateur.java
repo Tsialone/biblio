@@ -2,6 +2,8 @@ package s4.biblio.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -18,11 +20,13 @@ public class Utilisateur {
     private String nom;
     private String prenom;
     private String email;
+    private String mdp;
     private String tel;
     private String adresse;
+    private LocalDate dateNaissance ;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_categorie")
+@JoinColumn(name = "id_categorie")
     private Categorie categorie;
     
     

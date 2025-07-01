@@ -21,14 +21,12 @@ public class Categorie {
     
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TypeCategorie type;
+    private E_TypeCategorie type;
     
     private String description;
     
 
-    public enum TypeCategorie {
-        livre, adherant, admin, pret
-    }
+   
     @OneToMany(mappedBy = "categorieAdherant", fetch = FetchType.LAZY)
     private List<Quota> quotas;
 

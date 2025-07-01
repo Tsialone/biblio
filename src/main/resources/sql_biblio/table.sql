@@ -7,7 +7,7 @@ CREATE TABLE auteur (
 CREATE TABLE categorie (
     id INT PRIMARY KEY AUTO_INCREMENT,
     libelle VARCHAR(255) NOT NULL,
-    type ENUM('livre', 'adherant' ,'admin' , 'pret' ,'abonnement') NOT NULL,
+    type ENUM('livre', 'adherant' ,'admin' , 'pret') NOT NULL,
     description TEXT
 ) ENGINE=InnoDB;
 
@@ -25,6 +25,8 @@ CREATE TABLE utilisateur (
     email VARCHAR(255),
     tel VARCHAR(20),
     adresse VARCHAR(255),
+    mdp VARCHAR(255) ,
+    date_naissance DATE , 
     id_categorie INT,
     CONSTRAINT fk_categorie FOREIGN KEY (id_categorie) REFERENCES categorie(id)  ON DELETE CASCADE
 
@@ -45,7 +47,9 @@ CREATE TABLE histo_statut (
     CONSTRAINT fk_utilisateur_histo_statut FOREIGN KEY (id_utilisateur) REFERENCES utilisateur(id)  ON DELETE CASCADE,
     CONSTRAINT fk_pret_histo_statut FOREIGN KEY (id_pret) REFERENCES pret(id)  ON DELETE CASCADE,
     CONSTRAINT fk_reservation_histo_statut FOREIGN KEY (id_reservation) REFERENCES reservation(id)  ON DELETE CASCADE,
-    CONSTRAINT fk_penalite_histo_statut FOREIGN KEY (id_penalite) REFERENCES penalite(id)  ON DELETE CASCADE
+    CONSTRAINT fk_penalite_histo_statut FOREIGN KEY (id_penalite) REFERENCES penalite(id)  ON DELETE CASCADE,
+    CONSTRAINT fk_statut_histo_statut FOREIGN KEY (id_statut) REFERENCES statut(id)  ON DELETE CASCADE
+
 
 );
 
@@ -53,6 +57,7 @@ CREATE TABLE livre (
     id INT PRIMARY KEY AUTO_INCREMENT,
     titre VARCHAR(255),
     date_publication DATE , 
+    age INT ,
     description TEXT 
 ) ENGINE=InnoDB;
 
@@ -91,18 +96,10 @@ CREATE TABLE abonement (
     date_debut DATE , 
     date_fin DATE , 
     id_categorie INT ,
-    cotisation FLOAT , 
     CONSTRAINT fk_categorie_adherant_abonement FOREIGN KEY (id_categorie_utilisateur) REFERENCES categorie(id)  ON DELETE CASCADE,
     CONSTRAINT fk_categorie_abonement FOREIGN KEY (id_categorie) REFERENCES categorie(id)  ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-CREATE TABLE droit (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    valeur FLOAT , 
-    id_categorie_utilisateur INT ,
-    date DATE , 
-    CONSTRAINT fk_categorie_adherant_droit FOREIGN KEY (id_categorie_utilisateur) REFERENCES categorie(id)  ON DELETE CASCADE
-);
 
 CREATE TABLE pret (
     id INT PRIMARY KEY AUTO_INCREMENT,

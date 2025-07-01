@@ -23,7 +23,6 @@ public class Abonnement {
     @JoinColumn(name = "id_categorie")
     private Categorie categorie;
     
-    private float cotisation;
 
     private Date date_debut;
     private Date date_fin;

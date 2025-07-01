@@ -19,6 +19,7 @@ public class Livre {
     private String titre;
     private Date date_publication;
     private String description;
+    private Integer age;
     
     @OneToMany(mappedBy = "livre", fetch = FetchType.LAZY)
     private List<Exemplaire> exemplaires;
