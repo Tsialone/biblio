@@ -2,6 +2,8 @@ package s4.biblio.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class Pret {
     @JoinColumn(name = "id_adherant")
     private Utilisateur adherant;
     
-    private Date date_debut;
+    private LocalDate dateDebut;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_categorie")
@@ -36,6 +38,6 @@ public class Pret {
     @OneToMany(mappedBy = "pret", fetch = FetchType.LAZY)
     private List<Penalite> penalites;
 
-    @OneToMany(mappedBy = "pret", fetch = FetchType.LAZY)
-    private List<HistoStatut> histoStatuts;
+    // @OneToMany(mappedBy = "pret", fetch = FetchType.LAZY)
+    // private List<HistoStatut> histoStatuts;
 }
