@@ -95,7 +95,7 @@ CREATE TABLE abonnement (
     id_adherant INT ,
     date_debut DATE , 
     date_fin DATE , 
-    CONSTRAINT fk_categorie_adherant_abonement FOREIGN KEY (id_adherant) REFERENCES utilisateur(id)  ON DELETE CASCADE
+    CONSTRAINT fk_adherant_abonement FOREIGN KEY (id_adherant) REFERENCES utilisateur(id)  ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 

@@ -17,11 +17,11 @@ import s4.biblio.models.Utilisateur;
 public interface AbonnementRepository extends JpaRepository<Abonnement, Integer> {
     @Query(
         "SELECT a FROM Abonnement a WHERE " +
-        "(a.dateDebut >= :now_date ) AND  " +
-        "(a.dateFin <= :now_date) AND " +
+        "(a.dateDebut  <= :now_date ) AND  " +
+        "(a.dateFin >= :now_date) AND " +
         "(a.adherant = :adherant )"
     )
-    Abonnement findByAdherantDate(@Param("now_date") LocalDate debut, @Param("adherant") Utilisateur adherant);
+    List<Abonnement> findByAdherantDate(@Param("now_date") LocalDate debut, @Param("adherant") Utilisateur adherant);
 
     List<Abonnement> findByAdherant (Utilisateur adherant);
 }

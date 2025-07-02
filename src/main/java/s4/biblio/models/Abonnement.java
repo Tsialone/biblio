@@ -12,6 +12,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Abonnement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,9 +22,9 @@ public class Abonnement {
     @JoinColumn(name = "id_adherant")
     private Utilisateur adherant;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_categorie")
-    private Categorie categorie;
+    // @ManyToOne(fetch = FetchType.LAZY)
+    // @JoinColumn(name = "id_categorie")
+    // private Categorie categorie;
     
 
     private LocalDate dateDebut;

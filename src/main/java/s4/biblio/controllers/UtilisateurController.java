@@ -47,11 +47,12 @@ public class UtilisateurController {
         mv.addObject("title", "Home");
         mv.addObject("fonctionality", "Home");
         List<V_Abonnement> all_v_abonnement = new ArrayList<>();
+        LocalDate now_date = LocalDate.now();
         for (Abonnement abonnement : abonnementService.getByAdherant(utilisateur)) {
             V_Abonnement v_abonnement  = new V_Abonnement();
             v_abonnement.setDateDebut(abonnement.getDateDebut());
             v_abonnement.setDateFin(abonnement.getDateFin());
-            if ((LocalDate.now().isAfter(abonnement.getDateDebut()) || LocalDate.now().isEqual(abonnement.getDateDebut())) &&( LocalDate.now().isBefore(abonnement.getDateFin()) || LocalDate.now().isEqual(abonnement.getDateFin()) )) {
+            if ((now_date.isAfter(abonnement.getDateDebut()) || now_date.isEqual(abonnement.getDateDebut())) &&( now_date.isBefore(abonnement.getDateFin()) || now_date.isEqual(abonnement.getDateFin()) )) {
                 v_abonnement.setEtat(E_Abonnement.en_cours);
             }
             else 

@@ -1,22 +1,38 @@
+<%@ page import="s4.biblio.models.Categorie" %>
+<%@ page import="s4.biblio.models.Utilisateur" %>
+<%@ page import="s4.biblio.models.E_TypeCategorie" %>
+
+<%@ page import="java.util.List" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%  Utilisateur utilisateur = (Utilisateur)session.getAttribute("utilisateur"); 
+%>
+
 <aside class="bg-white shadow-sm d-none d-md-block" style="width: 16rem;">
-  <div class="p-4 border-bottom fw-bold fs-5">Biblio ko</div>
+  <div class="p-4 border-bottom fw-bold fs-5">
+    <a href="/utilisateur/home" class="text-decoration-none text-dark">Biblio ko</a>
+  </div>
 
   <nav class="p-3">
     <div class="mb-4">
-      <h3 class="text-muted text-uppercase small fw-semibold mb-2">View</h3>
-      <a href="/tickets/all" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Tickets</a>
-      <a href="/user/client/all" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Clients</a>
-      <a href="/user/client/filter" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Dashboard-Client</a>
-    </div>
-    <div class="mb-4">
+      <h3 class="text-muted text-uppercase small fw-semibold mb-2">Pret(s)</h3>
+      <% if (utilisateur.getCategorie().getType() == E_TypeCategorie.admin) { %>
+      <a href="/tickets/all" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Ajout</a>
+      <a href="/user/client/all" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Reserve</a>
+      <div class="mb-4">
       <h3 class="text-muted text-uppercase small fw-semibold mb-2">Stat(s)</h3>
-      <a href="/tickets/performances" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Performance</a>
+      <a href="/tickets/performances" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Dashboard</a>
     </div>
-    <div>
-      <h3 class="text-muted text-uppercase small fw-semibold mb-2">Abonnement</h3>
-      <a href="/tickets/tickets_report" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Renouveler</a>
+      <%-- <a href="/user/client/filter" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Prolonge</a> --%>
+     <% } else { %>
+      <a href="/tickets/all" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Mes prets</a>
+      <a href="/user/client/all" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Reserve</a>
+      <div>
+        <h3 class="text-muted text-uppercase small fw-semibold mb-2">Abonnement</h3>
+        <a href="/abonnement/form" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Renouveler</a>
+      </div>
+     <% } %>
+      
     </div>
-    
   </nav>
 </aside>
 
