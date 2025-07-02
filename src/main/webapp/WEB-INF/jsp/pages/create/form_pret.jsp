@@ -29,11 +29,11 @@
 
         <!-- Adhérant utilisateur en datalist -->
         <div class="mb-3">
-            <label for="adherantInput" class="form-label">Adhérant (Utilisateur)</label>
+            <label for="adherantInput" class="form-label">Referance Adhérant (Utilisateur)</label>
             <input list="utilisateurOptions" class="form-control" id="adherantInput" name="adherant.id" placeholder="Choisir un utilisateur..." required>
             <datalist id="utilisateurOptions">
                 <% for (Utilisateur u : utilisateurs) { %>
-                    <option value="<%= u.getId() %> | <%= u.getNom() %>"></option>
+                    <option value="<%= u.getId() %>"></option>
                 <% } %>
             </datalist>
         </div>
@@ -44,7 +44,7 @@
             <input list="exemplaireOptions" class="form-control" id="exemplaireInput" name="exemplaire.id" placeholder="Choisir un exemplaire..." required>
             <datalist id="exemplaireOptions">
                 <% for (Exemplaire e : exemplaires) { %>
-                    <option value="<%= e.getId() %> | <%= e.getLivre().getTitre() %>"></option>
+                    <option value="<%= e.getId() %>"></option>
                 <% } %>
             </datalist>
         </div>
