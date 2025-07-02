@@ -25,7 +25,6 @@ public class Pret {
     private Utilisateur adherant;
     
     private Date date_debut;
-    private Date date_fin;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_categorie")

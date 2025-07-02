@@ -104,7 +104,6 @@ CREATE TABLE pret (
     id_exemplaire  INT ,
     id_adherant INT , 
     date_debut DATE , 
-    date_fin DATE ,
     id_categorie INT , 
     CONSTRAINT fk_exemplaire_pret FOREIGN KEY (id_exemplaire) REFERENCES exemplaire(id)  ON DELETE CASCADE,
     CONSTRAINT fk_categorie_pret FOREIGN KEY (id_categorie) REFERENCES categorie(id)  ON DELETE CASCADE,
