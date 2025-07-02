@@ -1,4 +1,5 @@
 <%@ page import="s4.biblio.models.Utilisateur" %>
+<%@ page import="s4.biblio.models.E_TypeCategorie" %>
 <%@ page import="java.util.List" %>
 <%@ page import="s4.biblio.views.V_Abonnement" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -15,8 +16,8 @@ boolean deja_abonne = (boolean) request.getAttribute("deja_abonne");
       <h2 class="card-title mb-3">Bonjour, <%= utilisateur.getNom() %></h2>
       <h5 class="text-muted mb-4">Utilisateur: <%= utilisateur.getCategorie().getLibelle() %></h5>
       <p class="text-secondary">Bienvenue dans notre page de Biblio ko.</p>
-
-      <% if (deja_abonne) { %>
+      <% if (utilisateur.getCategorie().getType() == E_TypeCategorie.adherant ) {
+         if (deja_abonne) { %>
         <div class="table-responsive mt-4">
           <table class="table table-bordered table-hover">
             <thead class="table-light">
@@ -43,7 +44,9 @@ boolean deja_abonne = (boolean) request.getAttribute("deja_abonne");
           Vous n'êtes pas encore abonné.
           <a href="/abonnement/form" class="btn btn-sm btn-primary ms-3">S'abonner maintenant</a>
         </div>
-      <% } %>
+      <% }
+      } %>
+      
     </div>
   </div>
 </div>

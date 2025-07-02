@@ -1,4 +1,6 @@
 <%@ page import="s4.biblio.models.Categorie" %>
+<%@ page import="s4.biblio.models.E_TypeCategorie" %>
+
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <% 
@@ -61,16 +63,21 @@ String alertClass = "alert-" + (message_type != null ? message_type : "info");
         <div class="invalid-feedback">Veuillez entrer votre date de naissance.</div>
       </div>
 
-      <div class="col-12">
-        <label for="categorie" class="form-label fw-medium">Catégorie</label>
-        <select id="categorie" name="categorie" class="form-select" required>
-          <option value="">-- Sélectionnez une catégorie --</option>
-          <%  for (Categorie categorie : categorie_utilisateur) { %> 
-            <option value=<%= categorie.getId() %>><%= categorie.getLibelle() %></option>
-       <%  } %>
-        </select>
-        <div class="invalid-feedback">Veuillez sélectionner une catégorie.</div>
-      </div>
+     <select id="categorie" name="categorie" class="form-select" required>
+        <option value="">-- Sélectionnez une catégorie --</option>
+        <optgroup label="Adhérant">
+          <% for (Categorie cat : categorie_utilisateur) {
+              if (cat.getType() == E_TypeCategorie.adherant) { %>
+            <option value="<%= cat.getId() %>"><%= cat.getLibelle() %></option>
+          <% }} %>
+        </optgroup>
+        <optgroup label="Admin">
+          <% for (Categorie cat : categorie_utilisateur) {
+              if (cat.getType() == E_TypeCategorie.admin) { %>
+            <option value="<%= cat.getId() %>"><%= cat.getLibelle() %></option>
+          <% }} %>
+        </optgroup>
+    </select>
 
       <div class="col-12">
         <label for="password" class="form-label fw-medium">Mot de passe</label>

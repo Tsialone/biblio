@@ -101,7 +101,9 @@ public class UtilisateurController {
     @GetMapping("inscription")
     public ModelAndView inscription() {
         ModelAndView mv = new ModelAndView("pages/inscription");
-        List<Categorie> categorie_utilisateur = categorieService.getByType(E_TypeCategorie.adherant);
+        // List<Categorie> categorie_utilisateur = categorieService.getByType(E_TypeCategorie.adherant);
+        List<Categorie> categorie_utilisateur = categorieService.getAll();
+        
         mv.addObject("categorie_utilisateur", categorie_utilisateur);
         // mv.addObject("content", "pages/views/user_home.jsp");
         // mv.addObject("title", "home");
