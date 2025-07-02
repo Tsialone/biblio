@@ -3,6 +3,7 @@ package s4.biblio.models;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "reservation")
@@ -20,8 +21,9 @@ public class Reservation {
     private Pret pret;
     
     private Date date_demande;
+
+    @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY)
+    private List<HistoStatut> histoStatuts;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_histo_statut")
-    private HistoStatut histoStatut;
+   
 }

@@ -1,0 +1,3 @@
+DROP DATABASE IF EXISTS biblio;
+CREATE DATABASE biblio;
+USE biblio;

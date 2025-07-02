@@ -20,12 +20,10 @@ public class Statut {
     
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TypeStatut type;
+    private E_TypeStatut type;
     
     @OneToMany(mappedBy = "statut", fetch = FetchType.LAZY)
     private List<HistoStatut> histoStatuts;
     
-    public enum TypeStatut {
-        exemplaire, adherant, pret, reservation
-    }
+    
 }

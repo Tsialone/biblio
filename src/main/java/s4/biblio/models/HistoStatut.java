@@ -2,8 +2,9 @@ package s4.biblio.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "histo_statut")
@@ -20,17 +21,26 @@ public class HistoStatut {
     @JoinColumn(name = "id_statut")
     private Statut statut;
     
-    private Date date_debut;
+    private LocalDate date_debut;
     
-    @OneToOne(mappedBy = "histoStatut", fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_exemplaire")
     private Exemplaire exemplaire;
-    
-    @OneToMany(mappedBy = "histoStatut", fetch = FetchType.LAZY)
-    private List<Pret> prets;
-    
-    @OneToMany(mappedBy = "histoStatut", fetch = FetchType.LAZY)
-    private List<Reservation> reservations;
-    
-    @OneToMany(mappedBy = "histoStatut", fetch = FetchType.LAZY)
-    private List<Penalite> penalites;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_utilisateur" )
+    private Utilisateur utilisateur;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_pret")
+    private Pret pret;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_reservation")
+    private Reservation reservation;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_penalite")
+    private Penalite penalite;
+
 }

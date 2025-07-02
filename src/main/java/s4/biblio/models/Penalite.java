@@ -3,6 +3,7 @@ package s4.biblio.models;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "penalite")
@@ -23,7 +24,6 @@ public class Penalite {
     private Integer quotas;
     private Integer nbr_jour;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_histo_statut")
-    private HistoStatut histoStatut;
+   @OneToMany(mappedBy = "penalite", fetch = FetchType.LAZY)
+    private List<HistoStatut> histoStatuts;
 }
