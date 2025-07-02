@@ -48,7 +48,11 @@ public class AbonnementService {
         return repository.findAll();
     }
     public Abonnement getByAdherantDate (LocalDate now_date , Utilisateur adherant) {
-        return this.repository.findByAdherantDate (now_date ,  adherant).getLast();
+        List<Abonnement> abonnements = this.repository.findByAdherantDate (now_date ,  adherant);
+        if (abonnements.isEmpty()) {
+            return null;
+        }
+        return abonnements.getFirst();
     }   
 
     public List<Abonnement> getByAdherant (Utilisateur utilisateur){

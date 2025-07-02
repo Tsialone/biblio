@@ -139,9 +139,7 @@ CREATE TABLE jour_ferie (
 CREATE TABLE quota (
     id INT PRIMARY KEY AUTO_INCREMENT,
     id_categorie_adherant INT ,
-    id_categorie_abonnement INT ,
     nbr_livre INT , 
     nbr_jour INT,
-    CONSTRAINT fk_categorie_adherant_quota FOREIGN KEY (id_categorie_adherant) REFERENCES categorie(id)  ON DELETE CASCADE,
-    CONSTRAINT fk_categorie_abonnement_quota FOREIGN KEY (id_categorie_abonnement) REFERENCES categorie(id)  ON DELETE CASCADE
+    CONSTRAINT fk_categorie_adherant_quota FOREIGN KEY (id_categorie_adherant) REFERENCES categorie(id)  ON DELETE CASCADE
 );

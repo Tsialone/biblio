@@ -30,7 +30,7 @@
         <!-- Adhérant utilisateur en datalist -->
         <div class="mb-3">
             <label for="adherantInput" class="form-label">Referance Adhérant (Utilisateur)</label>
-            <input list="utilisateurOptions" class="form-control" id="adherantInput" name="adherant.id" placeholder="Choisir un utilisateur..." required>
+            <input list="utilisateurOptions" class="form-control" id="adherantInput" name="adherant" placeholder="Choisir un utilisateur..." required>
             <datalist id="utilisateurOptions">
                 <% for (Utilisateur u : utilisateurs) { %>
                     <option value="<%= u.getId() %>"></option>
@@ -41,7 +41,7 @@
         <!-- Exemplaire en datalist -->
         <div class="mb-3">
             <label for="exemplaireInput" class="form-label">Exemplaire</label>
-            <input list="exemplaireOptions" class="form-control" id="exemplaireInput" name="exemplaire.id" placeholder="Choisir un exemplaire..." required>
+            <input list="exemplaireOptions" class="form-control" id="exemplaireInput" name="exemplaire" placeholder="Choisir un exemplaire..." required>
             <datalist id="exemplaireOptions">
                 <% for (Exemplaire e : exemplaires) { %>
                     <option value="<%= e.getId() %>"></option>
@@ -52,7 +52,7 @@
         <!-- Catégorie en select -->
         <div class="mb-3">
             <label for="categorie" class="form-label">Catégorie</label>
-            <select class="form-control" id="categorie" name="categorie.id" required>
+            <select class="form-control" id="categorie" name="categorie" required>
                 <option value="">-- Sélectionner une catégorie --</option>
                 <% for (Categorie c : categories) { %>
                     <option value="<%= c.getId() %>"><%= c.getLibelle() %></option>
@@ -66,6 +66,6 @@
             <input type="date" class="form-control" id="dateDebut" name="dateDebut" required>
         </div>
 
-        <button type="submit" class="btn btn-primary">Valider le prêt</button>
+        <button type="submit" class="btn btn-primary">Faire le pret</button>
     </form>
 </div>

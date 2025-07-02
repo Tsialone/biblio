@@ -55,12 +55,13 @@ public class PretController {
     public String savePret(@ModelAttribute PretForm form, RedirectAttributes redirectAttributes) {
         System.out.println(form);
         try {
-            // abonnementService.saveByForm(form);
-            // redirectAttributes.addFlashAttribute("message", "Merci!");
-            // redirectAttributes.addFlashAttribute("message_type", "success");
+            pretService.saveByForm(form);
+            redirectAttributes.addFlashAttribute("message", "Merci!");
+            redirectAttributes.addFlashAttribute("message_type", "success");
         } catch (Exception e) {
-            // redirectAttributes.addFlashAttribute("message", "Erreur: " + e.getMessage());
-            // redirectAttributes.addFlashAttribute("message_type", "danger");
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("message", "Erreur: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("message_type", "danger");
         }
         return "redirect:/pret/form";
 
