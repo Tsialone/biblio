@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpSession;
 import s4.biblio.form.AbonnementForm;
 import s4.biblio.form.PretForm;
+import s4.biblio.form.RemiseForm;
 import s4.biblio.models.E_TypeCategorie;
 import s4.biblio.models.Utilisateur;
 import s4.biblio.services.AbonnementService;
@@ -69,6 +70,37 @@ public class PretController {
 
 
         return mv;
+    }
+    @GetMapping("remise/form")
+    public ModelAndView getRemettreForm(HttpSession session) {
+        ModelAndView mv = new ModelAndView("layout");
+        Utilisateur utilisateur = (Utilisateur)session.getAttribute("utilisateur");
+        
+        mv.addObject("content", "pages/create/form_remise.jsp");
+        mv.addObject("title", "Pret");
+        mv.addObject("fonctionality", "Remise pret");
+
+        // mv.addObject("utilisateurs", utilisateurService.getByCategorieType(E_TypeCategorie.adherant));
+        // mv.addObject("exemplaires", exemplaireService.getAll());
+        mv.addObject("prets", pretService.getByAdherant(utilisateur));
+
+
+        return mv;
+    }
+    @PostMapping("remise/save")
+    public String saveRemise(@ModelAttribute RemiseForm form, RedirectAttributes redirectAttributes) {
+        System.out.println(form);
+        try {
+            pretService.saveByRemiseForm(form);
+            redirectAttributes.addFlashAttribute("message", "Merci!");
+            redirectAttributes.addFlashAttribute("message_type", "success");
+        } catch (Exception e) {
+            // e.printStackTrace();
+            redirectAttributes.addFlashAttribute("message", "Erreur: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("message_type", "danger");
+        }
+        return "redirect:/pret/form";
+
     }
 
     @PostMapping("save")

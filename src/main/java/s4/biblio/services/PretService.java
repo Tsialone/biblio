@@ -6,12 +6,14 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import s4.biblio.form.PretForm;
+import s4.biblio.form.RemiseForm;
 import s4.biblio.models.Abonnement;
 import s4.biblio.models.Categorie;
 import s4.biblio.models.E_TypeCategorie;
 import s4.biblio.models.E_TypeStatut;
 import s4.biblio.models.Exemplaire;
 import s4.biblio.models.HistoStatut;
+import s4.biblio.models.Penalite;
 import s4.biblio.models.Pret;
 import s4.biblio.models.Quota;
 import s4.biblio.models.Statut;
@@ -36,6 +38,10 @@ public class PretService {
     private HistoStatutService histoStatutService;
     @Autowired
     private QuotaService quotaService;
+    @Autowired
+    private JourFerieService jourFerieService;
+    @Autowired
+    private PenaliteService penaliteService;
 
     public Optional<Pret> getById(Integer id_pret) {
         return repository.findById(id_pret);
@@ -49,6 +55,30 @@ public class PretService {
         return repository.findByAdherant(adherant);
     }
 
+    public void saveByRemiseForm(RemiseForm form) throws Exception {
+        Pret pret = form.getPret();
+        LocalDate pret_date_fin = pret.getDateFin();
+        int nbr_jour = 2;
+        Penalite penalite = new Penalite(null, pret, pret_date_fin, pret_date_fin.plusDays(nbr_jour));
+        if (form.getDateRemise() == null) {
+            penaliteService.save(penalite);
+            throw new Exception("Vous avez ete penalise cause de non remise");
+        }
+        if (form.getDateRemise().isBefore(pret.getDateDebut())) {
+            // penaliteService.save(penalite);
+            throw new Exception("La remise doit etre dans le pret au moins");
+        }
+        // ato ilay penalite
+        if (form.getDateRemise().isAfter(pret.getDateFin())) {
+            penaliteService.save(penalite);
+            throw new Exception("Vous avez ete penalise cause de retard");
+        }
+        // if (pret.getDateReprise() != null)
+        // {
+        // }
+        // pret.setDateReprise(form.getDateRemise());
+    }
+
     public void saveByForm(PretForm form) throws Exception {
         Pret pret = new Pret(
                 null,
@@ -58,8 +88,7 @@ public class PretService {
                 null,
                 form.getCategorie(),
                 null,
-                null
-                );
+                null);
 
         Abonnement adh_abonnement = abonnementService.getByAdherantDate(pret.getDateDebut(), pret.getAdherant());
         Utilisateur user = pret.getAdherant();
@@ -74,6 +103,11 @@ public class PretService {
         // verification si l'exemplaire existe
         if (user_Exemplaire == null) {
             throw new Exception("Exemplaire non trouver");
+        }
+        // verification de l'age de l'adherant
+        if (user_Exemplaire.getAgeMin() > user.getAge()) {
+            throw new Exception("Les adherants d'age " + user.getAge() + " ne sont pas autorise, require "
+                    + user_Exemplaire.getAgeMin());
         }
         // verification si l'utilisateur est es actif
         if (current_histo_statut == null) {
@@ -96,11 +130,21 @@ public class PretService {
         LocalDate user_date_debut_pret = pret.getDateDebut();
         Quota user_quota = quotaService.getByCategorieAdherant(user.getCategorie());
         LocalDate user_date_fin_pret = user_date_debut_pret.plusDays(user_quota.getNombreJour());
-        pret.setDateFin(user_date_fin_pret);
+
         // si sur place pas on applique pas le quotas
         if (pret.getCategorie().getLibelle().equalsIgnoreCase("sur place")) {
-            pret.setDateFin(pret.getDateDebut());
+            user_date_fin_pret = pret.getDateDebut();
         }
+
+        // prendre en compte les jours ferier
+        int total_nbr_jour_pret_ferie = jourFerieService.nbrSautByFerieAndDate(user_date_fin_pret);
+        System.out.println("debugggggggggggggggggggggggggggggg: " + total_nbr_jour_pret_ferie);
+        System.out.println("avant:" + user_date_fin_pret);
+        user_date_fin_pret = user_date_fin_pret.plusDays(total_nbr_jour_pret_ferie);
+        System.out.println("apres:" + user_date_fin_pret);
+
+        pret.setDateFin(user_date_fin_pret);
+
         Pret exemplaire_prete_dispo = estDispo(user_Exemplaire, user_date_debut_pret, user_date_fin_pret);
         if (exemplaire_prete_dispo != null) {
             throw new Exception(
@@ -113,8 +157,27 @@ public class PretService {
             throw new Exception("Le prêt n'est pas compris dans la période de l'abonnement. "
                     + "Abonnement valide du " + adh_abonnement.getDateDebut() + " au " + adh_abonnement.getDateFin());
         }
-
+        // verification de nombre de livre deja prise
+        List<Pret> prets_user = getByAdherant(user);
+        int nbr_pret_effectuer = prets_user.size();
+        // mbola tss penalite
+        int nbr_pret_max = user_quota.getNombreLivres();
+        if (nbr_pret_effectuer + 1 > nbr_pret_max) {
+            throw new Exception("L'adherant a atteint son quotas maximal max: " + nbr_pret_max);
+        }
+        // verification si il est penalise
+        List<LocalDate> intervall_peno = penaliteService.getIntervallePenaliteByAdherant(user);
+        if (!intervall_peno.isEmpty()) {
+            if  (estDansIntervalle (pret.getDateDebut() , intervall_peno.getFirst() , intervall_peno.getLast()))  { 
+                throw new Exception("L'utilsateur est penalise");
+            }
+        }
         repository.save(pret);
+    }
+
+    public boolean estDansIntervalle(LocalDate dateCible, LocalDate debut, LocalDate fin) {
+        return (dateCible.isEqual(debut) || dateCible.isAfter(debut)) &&
+                (dateCible.isEqual(fin) || dateCible.isBefore(fin));
     }
 
     public void save(Pret pret) {

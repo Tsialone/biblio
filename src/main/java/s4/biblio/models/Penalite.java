@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -21,14 +20,16 @@ public class Penalite {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_pret")
     private Pret pret;
-    
 
     @Column(name = "date_debut")
     private LocalDate dateDebut;
-    private Integer quotas;
-    @Column(name = "nbr_jour")
-    private Integer nbrJour;
+
+    @Column(name = "date_fin")
+    private LocalDate dateFin;
+    // private Integer quotas;
+    // @Column(name = "nbr_jour")
+    // private Integer nbrJour;
     
-   @OneToMany(mappedBy = "penalite", fetch = FetchType.LAZY)
-    private List<HistoStatut> histoStatuts;
+//    @OneToMany(mappedBy = "penalite", fetch = FetchType.LAZY)
+//     private List<HistoStatut> histoStatuts;
 }

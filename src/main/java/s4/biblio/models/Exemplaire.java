@@ -21,6 +21,10 @@ public class Exemplaire {
     private Livre livre;
     @Column(name = "date_acquisition")
     private Date dateAcquisition;
+
+
+    @Column (name = "age_min")
+    private Integer ageMin;
     
     @OneToMany(mappedBy = "exemplaire", fetch = FetchType.LAZY)
     private List<Pret> prets;

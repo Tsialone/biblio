@@ -85,6 +85,7 @@ CREATE TABLE exemplaire (
     id INT PRIMARY KEY AUTO_INCREMENT,
     id_livre INT , 
     date_acquisition DATE ,
+    age_min INT ,
     CONSTRAINT fk_livre_exemplaire FOREIGN KEY (id_livre) REFERENCES livre(id)  ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
@@ -151,7 +152,8 @@ CREATE TABLE penalite (
 -- ferie
 CREATE TABLE jour_ferie (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    date DATE ,
+    jour INT , 
+    mois INT , 
     description TEXT
 ) ENGINE=InnoDB;
 
