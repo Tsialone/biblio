@@ -40,6 +40,11 @@ public class PretService {
         return repository.findAll();
     }
 
+
+    
+    public List<Pret> getByAdherant(Utilisateur adherant) { 
+        return repository.findByAdherant(adherant);
+    }
     public void saveByForm(PretForm form) throws Exception {
         Pret pret = new Pret(
                 null,

@@ -36,6 +36,21 @@ public class PretController {
     private CategorieService categorieService;
 
 
+
+    @GetMapping("list")
+    public ModelAndView getListe(HttpSession session) {
+        ModelAndView mv = new ModelAndView("layout");
+        Utilisateur utilisateur = (Utilisateur)session.getAttribute("utilisateur");
+        mv.addObject("content", "pages/views/list_prets.jsp");
+        mv.addObject("title", "Pret");
+        mv.addObject("fonctionality", "Tout mes prets");
+
+        // mv.addObject("utilisateurs", utilisateurService.getByCategorieType(E_TypeCategorie.adherant));
+        // mv.addObject("exemplaires", exemplaireService.getAll());
+        mv.addObject("prets", pretService.getByAdherant(utilisateur));
+
+        return mv;
+    }
     @GetMapping("form")
     public ModelAndView getPretForm() {
         ModelAndView mv = new ModelAndView("layout");
