@@ -2,6 +2,8 @@ package s4.biblio.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -20,9 +22,12 @@ public class Penalite {
     @JoinColumn(name = "id_pret")
     private Pret pret;
     
-    private Date date_debut;
+
+    @Column(name = "date_debut")
+    private LocalDate dateDebut;
     private Integer quotas;
-    private Integer nbr_jour;
+    @Column(name = "nbr_jour")
+    private Integer nbrJour;
     
    @OneToMany(mappedBy = "penalite", fetch = FetchType.LAZY)
     private List<HistoStatut> histoStatuts;

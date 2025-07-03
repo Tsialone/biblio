@@ -16,6 +16,7 @@ public class PretForm {
     Exemplaire exemplaire;
     Utilisateur adherant;
     LocalDate dateDebut;
+    LocalDate dateFin;
     Categorie categorie;
 
 

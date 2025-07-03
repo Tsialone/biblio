@@ -2,6 +2,8 @@ package s4.biblio.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +22,8 @@ public class Reservation {
     @JoinColumn(name = "id_pret")
     private Pret pret;
     
-    private Date date_demande;
+    @Column(name = "date_demande")
+    private LocalDate dateDemande;
 
     @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY)
     private List<HistoStatut> histoStatuts;

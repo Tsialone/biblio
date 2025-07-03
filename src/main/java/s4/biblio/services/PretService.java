@@ -46,6 +46,7 @@ public class PretService {
                 form.getExemplaire(),
                 form.getAdherant(),
                 form.getDateDebut(),
+                null,
                 form.getCategorie(),
                 null,
                 null);
@@ -77,16 +78,30 @@ public class PretService {
         }
         // verification si l'utilisateur est un abonnee
         if (adh_abonnement == null) {
-            throw new Exception("L'adherant " + pret.getAdherant().getId() + " | " + pret.getAdherant().getNom()+ " n'est pas un abonnee");
+            throw new Exception("L'adherant " + pret.getAdherant().getId() + " | " + pret.getAdherant().getNom()
+                    + " n'est pas un abonnee");
         }
 
         // verification si l'exemplaire est disponible
         LocalDate user_date_debut_pret = pret.getDateDebut();
         Quota user_quota = quotaService.getByCategorieAdherant(user.getCategorie());
         LocalDate user_date_fin_pret = user_date_debut_pret.plusDays(user_quota.getNombreJour());
+        pret.setDateFin(user_date_fin_pret);
+        // si sur place pas on applique pas le quotas
+        if (pret.getCategorie().getLibelle().equalsIgnoreCase("sur place")) {
+            pret.setDateFin(pret.getDateDebut());
+        }
         Pret exemplaire_prete_dispo = estDispo(user_Exemplaire, user_date_debut_pret, user_date_fin_pret);
         if (exemplaire_prete_dispo != null) {
-            throw new Exception("Cet exemplaire est a ete deja prete par " + exemplaire_prete_dispo.getAdherant().getId());
+            throw new Exception(
+                    "Cet exemplaire est a ete deja prete par " + exemplaire_prete_dispo.getAdherant().getId());
+        }
+
+        // Vérification si le prêt est bien dans la période de validité de l'abonnement
+        if (pret.getDateDebut().isBefore(adh_abonnement.getDateDebut())
+                || pret.getDateFin().isAfter(adh_abonnement.getDateFin())) {
+            throw new Exception("Le prêt n'est pas compris dans la période de l'abonnement. "
+                    + "Abonnement valide du " + adh_abonnement.getDateDebut() + " au " + adh_abonnement.getDateFin());
         }
 
         repository.save(pret);

@@ -25,9 +25,9 @@ public class QuotaService {
     }
    
     public  Quota getByCategorieAdherant(Categorie categorie){
-        Quota quota = this.repository.findByCategorieAdherant(categorie);
-        System.out.println("itoooooooo");
-        System.out.println(quota.getCategorieAdherant().getLibelle());
+        // Quota quota = this.repository.findByCategorieAdherant(categorie);
+        // System.out.println("itoooooooo");
+        // System.out.println(quota.getCategorieAdherant().getLibelle());
         return this.repository.findByCategorieAdherant(categorie);
     };
 

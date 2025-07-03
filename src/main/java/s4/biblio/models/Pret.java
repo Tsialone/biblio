@@ -26,7 +26,12 @@ public class Pret {
     @JoinColumn(name = "id_adherant")
     private Utilisateur adherant;
     
+    @Column(name = "date_debut")
     private LocalDate dateDebut;
+
+    @Column(name = "date_fin")
+    private LocalDate dateFin;
+
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_categorie")

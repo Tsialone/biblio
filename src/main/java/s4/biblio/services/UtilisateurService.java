@@ -56,7 +56,7 @@ public class UtilisateurService {
        if (this.getByEmail(utilisateur.getEmail()) != null) {
            throw new Exception("Email deja utiliser!");
        }
-        HistoStatut histoStatut = new HistoStatut(null, statut, LocalDate.now(), null, utilisateur, null, null, null);
+        HistoStatut histoStatut = new HistoStatut(null, statut, LocalDate.now(), null, utilisateur, null, null);
         this.repository.save(utilisateur);
         this.histoStatutService.save(histoStatut);
     }

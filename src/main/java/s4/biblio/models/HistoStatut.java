@@ -21,7 +21,8 @@ public class HistoStatut {
     @JoinColumn(name = "id_statut")
     private Statut statut;
     
-    private LocalDate date_debut;
+    @Column(name = "date_debut")
+    private LocalDate dateDebut;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_exemplaire")
@@ -31,9 +32,9 @@ public class HistoStatut {
     @JoinColumn(name = "id_utilisateur" )
     private Utilisateur utilisateur;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_pret")
-    private Pret pret;
+    // @ManyToOne(fetch = FetchType.LAZY)
+    // @JoinColumn(name = "id_pret")
+    // private Pret pret;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_reservation")

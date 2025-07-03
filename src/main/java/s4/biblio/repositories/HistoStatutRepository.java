@@ -23,7 +23,7 @@ public interface HistoStatutRepository extends JpaRepository<HistoStatut, Intege
 
 
     @Query("SELECT hs FROM HistoStatut hs WHERE " +
-                 "(hs.utilisateur = :utilisateur ) ORDER BY date_debut desc"
+                 "(hs.utilisateur = :utilisateur ) ORDER BY dateDebut desc"
                  
         )
     List<HistoStatut> findByUtilisateur(@Param("utilisateur") Utilisateur adherant);
