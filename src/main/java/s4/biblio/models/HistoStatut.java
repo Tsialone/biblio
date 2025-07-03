@@ -28,6 +28,8 @@ public class HistoStatut {
     @JoinColumn(name = "id_exemplaire")
     private Exemplaire exemplaire;
 
+    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_utilisateur" )
     private Utilisateur utilisateur;
@@ -43,5 +45,9 @@ public class HistoStatut {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_penalite")
     private Penalite penalite;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_prolongement")
+    private Prolongement prolongement;
 
 }

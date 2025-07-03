@@ -23,7 +23,9 @@ INSERT INTO statut (libelle, type) VALUES
 
 -- Statuts pour les réservations (type = 'reservation')
 INSERT INTO statut (libelle, type) VALUES
-('En attente', 'reservation'),
-('Confirmée', 'reservation'),
-('Annulée', 'reservation'),
-('Expirée', 'reservation');
+('En attente', 'reservation_prolongement'),
+('Confirmée', 'reservation_prolongement'),
+('Annulée', 'reservation_prolongement'),
+('Expirée', 'reservation_prolongement');
+
+

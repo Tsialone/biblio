@@ -3,6 +3,6 @@ public enum E_TypeStatut {
     exemplaire,
     adherant,
     pret,
-    reservation,
-    penalite
+    reservation_prolongement,
+    penalite,
 }

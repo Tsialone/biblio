@@ -1,14 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
-<%@ page import="s4.biblio.models.Pret" %>
+<%@ page import="s4.biblio.models.Reservation" %>
+<%@ page import="s4.biblio.models.Prolongement" %>
 <%@ page import="s4.biblio.models.Exemplaire" %>
 <%@ page import="s4.biblio.models.Utilisateur" %>
-<%@ page import="s4.biblio.models.Prolongement" %>
-<%@ page import="s4.biblio.models.Statut" %>
 <%@ page import="s4.biblio.models.Categorie" %>
 
 <%
-    List<Pret> prets = (List<Pret>) request.getAttribute("prets");
+    List<Prolongement> prolongements = (List<Prolongement>) request.getAttribute("prolongements");
     String message = (String) request.getAttribute("message");
     String message_type = (String) request.getAttribute("message_type");
     String alertClass = "alert-" + (message_type != null ? message_type : "info");
@@ -16,7 +15,7 @@
 %>
 
 <div class="container mt-4">
-    <h4 class="mb-3">Liste des prêts</h4>
+    <h4 class="mb-3">Liste des prolongements</h4>
     <% if (message != null) { %>
         <div class="alert <%= alertClass %> alert-dismissible fade show" role="alert">
             <%= message %>
@@ -27,36 +26,41 @@
         <thead class="table-light">
             <tr>
                 <th>#</th>
+                <th>Reference</th>
                 <th>Exemplaire</th>
-                <th>Catégorie</th>
+                <th>Type de pret</th>
                 <th>Date début</th>
                 <th>Date fin prévue</th>
+                <th>Statut</th>
                 <th>Fonctionnalite</th>
-                <th>Statut Prolengement</th>
+
+
+
             </tr>
         </thead>
         <tbody>
-            <% if (prets != null && !prets.isEmpty()) {
+            <% if (prolongements != null && !prolongements.isEmpty()) {
                 int i = 1;
-                for (Pret pret : prets) {
+                for (Prolongement prolongement : prolongements) {
             %>
             <tr>
                 <td><%= i++ %></td>
-                <td><%= pret.getExemplaire().getLivre().getTitre() %></td>
-                <td><%= pret.getCategorie().getLibelle() %></td>
-                <td><%= pret.getDateDebut() %></td>
-                <td><%= pret.getDateFin() %></td>
+                <td><%= prolongement.getId()%></td>
+                <td><%= prolongement.getPret().getExemplaire().getLivre().getTitre() %></td>
+                <td><%= prolongement.getPret().getCategorie().getLibelle() %></td>
+                <td><%= prolongement.getLastDateFin() %></td>
+                <td><%= prolongement.getNewDateFin() %></td>
+                <td><%= prolongement.getStatut().getLibelle() %></td>
                 <td>
-                    <a href="/prolongement/demande?id=<%= pret.getId() %>" class="btn btn-sm btn-outline-primary">Prolonger</a>
+                    <a href="/prolongement/valider?id=<%= prolongement.getId() %>" class="btn btn-sm btn-outline-primary">Valider</a>
+                    <a href="/prolongement/refuser?id=<%= prolongement.getId() %>" class="btn btn-sm btn-outline-danger">Annulée</a>
                 </td>
-                <td>
-                    <%= pret.getLatestProlongement() != null ? pret.getLatestProlongement().getStatut().getLibelle()  : "Aucune transaction" %>
-                </td>
+
             </tr>
             <%   }
                } else { %>
             <tr>
-                <td colspan="6" class="text-center">Aucun prêt trouvé.</td>
+                <td colspan="6" class="text-center">Aucune reservation trouvée.</td>
             </tr>
             <% } %>
         </tbody>

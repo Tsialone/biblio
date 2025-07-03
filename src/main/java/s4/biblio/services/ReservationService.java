@@ -40,10 +40,10 @@ public class ReservationService {
     public void updateStatutReservation(Statut statut, Reservation reservation) throws Exception {
         if (statut.getLibelle().equalsIgnoreCase("Annulée")) {
             // si la reservation est deja valider
-            if  (!reservation.getStatut().getLibelle().equalsIgnoreCase("En attente")) {
+            if (!reservation.getStatut().getLibelle().equalsIgnoreCase("En attente")) {
                 throw new Exception("Transaction deja close");
             }
-            HistoStatut histoStatut = new HistoStatut(null, statut, null, null, null, reservation, null);
+            HistoStatut histoStatut = new HistoStatut(null, statut, null, null, null, reservation, null, null);
             histoStatutService.save(histoStatut);
         } else if (statut.getLibelle().equalsIgnoreCase("Confirmée")) {
             Utilisateur user = reservation.getAdherant();
@@ -51,7 +51,7 @@ public class ReservationService {
             Abonnement adh_abonnement = abonnementService.getByAdherantDate(reservation.getDateDebut(), user);
 
             // si la reservation est deja valider
-            if  (!reservation.getStatut().getLibelle().equalsIgnoreCase("En attente")) {
+            if (!reservation.getStatut().getLibelle().equalsIgnoreCase("En attente")) {
                 throw new Exception("Transaction deja close");
             }
             // verification si l'utilisateur est est actif
@@ -91,9 +91,23 @@ public class ReservationService {
                         + "Abonnement valide du " + adh_abonnement.getDateDebut() + " au "
                         + adh_abonnement.getDateFin());
             }
-            Pret pret = new Pret(null, reservation.getExemplaire(), user, user_date_debut_pret, user_date_fin_pret,
-                    reservation.getCategoriePret(), null);
-            HistoStatut histoStatut = new HistoStatut(null, statut, LocalDate.now(), null, null, reservation, null);
+            Pret pret = new Pret(
+                    null,
+                    reservation.getExemplaire(),
+                    user, user_date_debut_pret,
+                    user_date_fin_pret,
+                    reservation.getCategoriePret(),
+                    null,
+                    null);
+            HistoStatut histoStatut = new HistoStatut(
+                    null,
+                    statut,
+                    LocalDate.now(),
+                    null,
+                    null,
+                    reservation,
+                    null,
+                    null);
             histoStatutService.save(histoStatut);
             pretService.save(pret);
 
@@ -125,13 +139,13 @@ public class ReservationService {
                 form.getCategoriePret(),
                 null);
 
-        
         reservation.setDateFin(reservation.getDateDebut().plusDays(nbr_jour_possible));
         if (reservation.getCategoriePret().getLibelle().equalsIgnoreCase("Sur place")) {
             reservation.setDateFin(reservation.getDateDebut());
         }
         repository.save(reservation);
-        HistoStatut histoStatut = new HistoStatut(null, statut, form.getDateDebut(), null, null, reservation, null);
+        HistoStatut histoStatut = new HistoStatut(null, statut, form.getDateDebut(), null, null, reservation, null,
+                null);
         histoStatutService.save(histoStatut);
 
     }

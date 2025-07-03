@@ -15,7 +15,7 @@ CREATE TABLE categorie (
 CREATE TABLE statut (
     id INT PRIMARY KEY AUTO_INCREMENT,
     libelle VARCHAR(255) NOT NULL,
-    type ENUM('exemplaire', 'adherant','reservation' ,'penalite') NOT NULL
+    type ENUM('exemplaire', 'adherant','reservation_prolongement' ,'penalite') NOT NULL
 ) ENGINE=InnoDB;
 
 CREATE TABLE utilisateur (
@@ -41,10 +41,12 @@ CREATE TABLE histo_statut (
     -- id_pret INT , 
     id_reservation INT ,
     id_penalite INT , 
+    id_prolongement INT ,
 
     date_debut DATE ,
     CONSTRAINT fk_exemplaire_histo_statut FOREIGN KEY (id_exemplaire) REFERENCES exemplaire(id)  ON DELETE CASCADE,
     CONSTRAINT fk_utilisateur_histo_statut FOREIGN KEY (id_utilisateur) REFERENCES utilisateur(id)  ON DELETE CASCADE,
+    CONSTRAINT fk_prolongement_histo_statut FOREIGN KEY (id_prolongement) REFERENCES prolongement(id)  ON DELETE CASCADE,
     -- CONSTRAINT fk_pret_histo_statut FOREIGN KEY (id_pret) REFERENCES pret(id)  ON DELETE CASCADE,
     CONSTRAINT fk_reservation_histo_statut FOREIGN KEY (id_reservation) REFERENCES reservation(id)  ON DELETE CASCADE,
     CONSTRAINT fk_penalite_histo_statut FOREIGN KEY (id_penalite) REFERENCES penalite(id)  ON DELETE CASCADE,
@@ -125,6 +127,17 @@ CREATE TABLE reservation (
     CONSTRAINT fk_exemplaire_reservation FOREIGN KEY (id_exemplaire) REFERENCES exemplaire(id)  ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+-- prolongemen
+CREATE TABLE prolongement (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_pret INT NOT NULL,
+    last_date_fin DATE NOT NULL,
+    new_date_fin DATE NOT NULL,
+    created DATE NOT NULL,
+    CONSTRAINT fk_pret_prolongement FOREIGN KEY (id_pret) REFERENCES pret(id) ON DELETE CASCADE
+);
+
+
 -- penalite 
 CREATE TABLE penalite (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -150,3 +163,4 @@ CREATE TABLE quota (
     nbr_jour INT,
     CONSTRAINT fk_categorie_adherant_quota FOREIGN KEY (id_categorie_adherant) REFERENCES categorie(id)  ON DELETE CASCADE
 );
+
