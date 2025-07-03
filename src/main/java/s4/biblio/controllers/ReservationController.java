@@ -19,12 +19,15 @@ import s4.biblio.form.PretForm;
 import s4.biblio.form.ReservationForm;
 import s4.biblio.models.E_TypeCategorie;
 import s4.biblio.models.Pret;
+import s4.biblio.models.Reservation;
+import s4.biblio.models.Statut;
 import s4.biblio.models.Utilisateur;
 import s4.biblio.services.AbonnementService;
 import s4.biblio.services.CategorieService;
 import s4.biblio.services.ExemplaireService;
 import s4.biblio.services.PretService;
 import s4.biblio.services.ReservationService;
+import s4.biblio.services.StatutService;
 import s4.biblio.services.UtilisateurService;
 
 @Controller
@@ -41,6 +44,25 @@ public class ReservationController {
     private CategorieService categorieService;
     @Autowired
     private ReservationService reservationService;
+    @Autowired
+    private StatutService statutService;
+
+    @GetMapping("refuser")
+    public String refuserReservation(@RequestParam("id") Integer id , RedirectAttributes redirectAttributes) {
+        Optional<Reservation> reservation = reservationService.getById(id);
+        Statut statut = statutService.getByLibelle("Annulée");
+        try {
+            // reservationService.saveByForm(form, utilisateur);
+            reservationService.updateStatutReservation(statut, reservation.get());
+            redirectAttributes.addFlashAttribute("message", "Transaction reussi!👌");
+            redirectAttributes.addFlashAttribute("message_type", "success");
+        } catch (Exception e) {
+            // e.printStackTrace();
+            redirectAttributes.addFlashAttribute("message", "Erreur: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("message_type", "danger");
+        }
+        return "redirect:/reservation/admin/list";
+    }
 
     public String getMethodName(@RequestParam String param) {
         return new String();
@@ -63,17 +85,26 @@ public class ReservationController {
 
     @GetMapping("list")
     public ModelAndView getListe(HttpSession session) {
-    ModelAndView mv = new ModelAndView("layout");
-    Utilisateur utilisateur = (Utilisateur)session.getAttribute("utilisateur");
-    mv.addObject("content", "pages/views/list_reservations.jsp");
-    mv.addObject("title", "Pret");
-    mv.addObject("fonctionality", "Tout mes resercation");
+        ModelAndView mv = new ModelAndView("layout");
+        Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+        mv.addObject("content", "pages/views/list_reservations.jsp");
+        mv.addObject("title", "Pret");
+        mv.addObject("fonctionality", "Tout mes resercation");
+        mv.addObject("reservations", reservationService.getByAdherant(utilisateur));
+        return mv;
+    }
 
-    // mv.addObject("exemplaires", exemplaireService.getAll());
-    mv.addObject("reservations", reservationService.getByAdherant(utilisateur));
+    @GetMapping("admin/list")
+    public ModelAndView getListeByAdmin() {
+        ModelAndView mv = new ModelAndView("layout");
+        // Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+        mv.addObject("content", "pages/views/list_reservations_admin.jsp");
+        mv.addObject("title", "Pret-admin");
+        mv.addObject("fonctionality", "Tout les reservations");
+        mv.addObject("reservations", reservationService.getAll());
+        return mv;
+    }
 
-    return mv;
-    }   
     // @GetMapping("form")
     // public ModelAndView getPretForm() {
     // ModelAndView mv = new ModelAndView("layout");

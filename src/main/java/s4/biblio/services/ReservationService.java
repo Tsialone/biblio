@@ -17,6 +17,7 @@ import s4.biblio.repositories.ReservationRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -30,12 +31,23 @@ public class ReservationService {
     @Autowired
     private HistoStatutService histoStatutService;
 
+
+    public void updateStatutReservation (Statut statut , Reservation reservation ) {    
+            if  (statut.getLibelle().equalsIgnoreCase("Annulée")) {
+                HistoStatut histoStatut = new HistoStatut(null, statut, null, null, null, reservation, null);
+                histoStatutService.save(histoStatut);
+            }
+    }
+    public Optional<Reservation> getById (Integer id) {
+        return repository.findById(id);
+    }
     public List<Reservation> getByAdherant (Utilisateur adherant) {
             return repository.findByAdherant(adherant);
     }
     public List<Reservation> getAll() {
         return repository.findAll();
     }
+
 
     public void saveByForm(ReservationForm form, Utilisateur utilisateur) {
         Quota quota = quotaService.getByCategorieAdherant(utilisateur.getCategorie());

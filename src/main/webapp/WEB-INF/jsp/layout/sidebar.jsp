@@ -17,7 +17,7 @@
       <% if (utilisateur.getCategorie().getType() == E_TypeCategorie.admin) { %>
       <h3 class="text-muted text-uppercase small fw-semibold mb-2">Pret(s)</h3>
       <a href="/pret/form" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Ajout</a>
-      <a href="/user/client/all" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Reservation(s)</a>
+      <a href="/reservation/admin/list" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Reservation(s)</a>
       <a href="/user/client/all" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Prolongement(s)</a>
     </div>
     <div class="mb-4">
