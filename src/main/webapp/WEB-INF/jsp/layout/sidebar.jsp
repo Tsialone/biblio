@@ -33,7 +33,7 @@
      <div class="mb-4">
       <h3 class="text-muted text-uppercase small fw-semibold mb-2">Reservation(s)</h3>
       <a href="/reservation/form" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Demande</a>
-      <a href="/user/client/all" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Mes reservations</a>
+      <a href="/reservation/list" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Mes reservations</a>
      </div>
       <div class="mb-4">
         <h3 class="text-muted text-uppercase small fw-semibold mb-2">Abonnement</h3>

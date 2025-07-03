@@ -116,8 +116,10 @@ CREATE TABLE pret (
 CREATE TABLE reservation (
     id INT PRIMARY KEY AUTO_INCREMENT,
     id_exemplaire INT , 
+    id_adherant INT , 
     date_debut DATE ,
     date_fin DATE,
+    CONSTRAINT fk_adherant_reservation FOREIGN KEY (id_adherant) REFERENCES utilisateur(id)  ON DELETE CASCADE,
     CONSTRAINT fk_exemplaire_reservation FOREIGN KEY (id_exemplaire) REFERENCES exemplaire(id)  ON DELETE CASCADE
 ) ENGINE=InnoDB;
 

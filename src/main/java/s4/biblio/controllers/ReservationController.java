@@ -39,7 +39,7 @@ public class ReservationController {
     private ExemplaireService exemplaireService;
     @Autowired
     private CategorieService categorieService;
-     @Autowired
+    @Autowired
     private ReservationService reservationService;
 
     public String getMethodName(@RequestParam String param) {
@@ -61,21 +61,19 @@ public class ReservationController {
         return mv;
     }
 
-    // @GetMapping("list")
-    // public ModelAndView getListe(HttpSession session) {
-    // ModelAndView mv = new ModelAndView("layout");
-    // Utilisateur utilisateur = (Utilisateur)session.getAttribute("utilisateur");
-    // mv.addObject("content", "pages/views/list_prets.jsp");
-    // mv.addObject("title", "Pret");
-    // mv.addObject("fonctionality", "Tout mes prets");
+    @GetMapping("list")
+    public ModelAndView getListe(HttpSession session) {
+    ModelAndView mv = new ModelAndView("layout");
+    Utilisateur utilisateur = (Utilisateur)session.getAttribute("utilisateur");
+    mv.addObject("content", "pages/views/list_reservations.jsp");
+    mv.addObject("title", "Pret");
+    mv.addObject("fonctionality", "Tout mes resercation");
 
-    // // mv.addObject("utilisateurs",
-    // utilisateurService.getByCategorieType(E_TypeCategorie.adherant));
-    // // mv.addObject("exemplaires", exemplaireService.getAll());
-    // mv.addObject("prets", pretService.getByAdherant(utilisateur));
+    // mv.addObject("exemplaires", exemplaireService.getAll());
+    mv.addObject("reservations", reservationService.getByAdherant(utilisateur));
 
-    // return mv;
-    // }
+    return mv;
+    }   
     // @GetMapping("form")
     // public ModelAndView getPretForm() {
     // ModelAndView mv = new ModelAndView("layout");
@@ -92,11 +90,12 @@ public class ReservationController {
     // }
 
     @PostMapping("save")
-    public String saveReservation(@ModelAttribute ReservationForm form,  HttpSession session   , RedirectAttributes redirectAttributes) {
+    public String saveReservation(@ModelAttribute ReservationForm form, HttpSession session,
+            RedirectAttributes redirectAttributes) {
         System.out.println(form);
-        Utilisateur utilisateur =  (Utilisateur) session.getAttribute("utilisateur");
+        Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
         try {
-            reservationService.saveByForm(form  , utilisateur);
+            reservationService.saveByForm(form, utilisateur);
             redirectAttributes.addFlashAttribute("message", "Merci!");
             redirectAttributes.addFlashAttribute("message_type", "success");
         } catch (Exception e) {

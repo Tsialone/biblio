@@ -12,6 +12,7 @@ import s4.biblio.models.Exemplaire;
 import s4.biblio.models.Pret;
 import s4.biblio.models.Reservation;
 import s4.biblio.models.Statut;
+import s4.biblio.models.Utilisateur;
 
 
 
@@ -19,5 +20,5 @@ import s4.biblio.models.Statut;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
-
+ List<Reservation> findByAdherant(Utilisateur adherant);
 }

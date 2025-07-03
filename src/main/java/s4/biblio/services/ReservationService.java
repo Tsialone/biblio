@@ -1,6 +1,5 @@
 package s4.biblio.services;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,29 +22,32 @@ import java.util.List;
 @Transactional
 public class ReservationService {
     @Autowired
-    private  ReservationRepository repository;
+    private ReservationRepository repository;
     @Autowired
-    private  QuotaService quotaService;
+    private QuotaService quotaService;
     @Autowired
-    private  StatutService statutService;
+    private StatutService statutService;
     @Autowired
-    private  HistoStatutService histoStatutService;
+    private HistoStatutService histoStatutService;
 
-   
+    public List<Reservation> getByAdherant (Utilisateur adherant) {
+            return repository.findByAdherant(adherant);
+    }
     public List<Reservation> getAll() {
         return repository.findAll();
     }
 
-    public void saveByForm  (ReservationForm form , Utilisateur utilisateur) {
+    public void saveByForm(ReservationForm form, Utilisateur utilisateur) {
         Quota quota = quotaService.getByCategorieAdherant(utilisateur.getCategorie());
         int nbr_jour_possible = quota.getNombreJour();
-        Statut statut =  statutService.getByLibelle("En attente");
-        
-        Reservation reservation = new Reservation(null, 
-        form.getExemplaire(), 
-        form.getDateDebut(), 
-        null, 
-        null);
+        Statut statut = statutService.getByLibelle("En attente");
+
+        Reservation reservation = new Reservation(null,
+                form.getExemplaire(),
+                utilisateur,
+                form.getDateDebut(),
+                null,
+                null);
         reservation.setDateFin(reservation.getDateDebut().plusDays(nbr_jour_possible));
         repository.save(reservation);
         HistoStatut histoStatut = new HistoStatut(null, statut, form.getDateDebut(), null, null, reservation, null);
@@ -54,6 +56,6 @@ public class ReservationService {
     }
 
     // public List<Categorie> getByType (E_TypeCategorie type){
-    //     return repository.findByType(type);
+    // return repository.findByType(type);
     // }
 }
