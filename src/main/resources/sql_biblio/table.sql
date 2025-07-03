@@ -115,9 +115,10 @@ CREATE TABLE pret (
 -- reservation d'un pret
 CREATE TABLE reservation (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    id_pret INT , 
-    date_demande DATE ,
-    CONSTRAINT fk_pret FOREIGN KEY (id_pret) REFERENCES pret(id)  ON DELETE CASCADE
+    id_exemplaire INT , 
+    date_debut DATE ,
+    date_fin DATE,
+    CONSTRAINT fk_exemplaire_reservation FOREIGN KEY (id_exemplaire) REFERENCES exemplaire(id)  ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- penalite 

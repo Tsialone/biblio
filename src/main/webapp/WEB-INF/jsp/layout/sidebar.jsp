@@ -14,21 +14,28 @@
 
   <nav class="p-3">
     <div class="mb-4">
-      <h3 class="text-muted text-uppercase small fw-semibold mb-2">Pret(s)</h3>
       <% if (utilisateur.getCategorie().getType() == E_TypeCategorie.admin) { %>
+      <h3 class="text-muted text-uppercase small fw-semibold mb-2">Pret(s)</h3>
       <a href="/pret/form" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Ajout</a>
       <a href="/user/client/all" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Reservation(s)</a>
       <a href="/user/client/all" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Prolongement(s)</a>
-
-      <div class="mb-4">
+    </div>
+    <div class="mb-4">
       <h3 class="text-muted text-uppercase small fw-semibold mb-2">Stat(s)</h3>
       <a href="/tickets/performances" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Dashboard</a>
     </div>
       <%-- <a href="/user/client/filter" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Prolonge</a> --%>
      <% } else { %>
+     <div class="mb-4">
+      <h3 class="text-muted text-uppercase small fw-semibold mb-2">Pret(s)</h3>
       <a href="/pret/list" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Mes prets</a>
-      <a href="/user/client/all" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Reserve</a>
-      <div>
+     </div>
+     <div class="mb-4">
+      <h3 class="text-muted text-uppercase small fw-semibold mb-2">Reservation(s)</h3>
+      <a href="/reservation/form" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Demande</a>
+      <a href="/user/client/all" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Mes reservations</a>
+     </div>
+      <div class="mb-4">
         <h3 class="text-muted text-uppercase small fw-semibold mb-2">Abonnement</h3>
         <a href="/abonnement/form" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Renouveler</a>
       </div>

@@ -37,8 +37,8 @@ public class Pret {
     @JoinColumn(name = "id_categorie")
     private Categorie categorie;
     
-    @OneToMany(mappedBy = "pret", fetch = FetchType.LAZY)
-    private List<Reservation> reservations;
+    // @OneToMany(mappedBy = "pret", fetch = FetchType.LAZY)
+    // private List<Reservation> reservations;
     
     @OneToMany(mappedBy = "pret", fetch = FetchType.LAZY)
     private List<Penalite> penalites;

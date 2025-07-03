@@ -21,6 +21,7 @@ import s4.biblio.repositories.PretRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -36,15 +37,18 @@ public class PretService {
     @Autowired
     private QuotaService quotaService;
 
+    public Optional<Pret> getById(Integer id_pret) {
+        return repository.findById(id_pret);
+    }
+
     public List<Pret> getAll() {
         return repository.findAll();
     }
 
-
-    
-    public List<Pret> getByAdherant(Utilisateur adherant) { 
+    public List<Pret> getByAdherant(Utilisateur adherant) {
         return repository.findByAdherant(adherant);
     }
+
     public void saveByForm(PretForm form) throws Exception {
         Pret pret = new Pret(
                 null,
@@ -53,7 +57,6 @@ public class PretService {
                 form.getDateDebut(),
                 null,
                 form.getCategorie(),
-                null,
                 null);
 
         Abonnement adh_abonnement = abonnementService.getByAdherantDate(pret.getDateDebut(), pret.getAdherant());

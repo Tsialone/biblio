@@ -19,11 +19,14 @@ public class Reservation {
     private Integer id;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_pret")
-    private Pret pret;
+    @JoinColumn(name = "id_exemplaire")
+    private Exemplaire exemplaire;
     
-    @Column(name = "date_demande")
-    private LocalDate dateDemande;
+    @Column(name = "date_debut")
+    private LocalDate dateDebut;
+
+    @Column(name = "date_fin")
+    private LocalDate dateFin;
 
     @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY)
     private List<HistoStatut> histoStatuts;

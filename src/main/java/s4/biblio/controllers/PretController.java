@@ -37,6 +37,11 @@ public class PretController {
 
 
 
+    
+    public String getMethodName(@RequestParam String param) {
+        return new String();
+    }
+    
     @GetMapping("list")
     public ModelAndView getListe(HttpSession session) {
         ModelAndView mv = new ModelAndView("layout");
