@@ -59,7 +59,7 @@ public class PretController {
             redirectAttributes.addFlashAttribute("message", "Merci!");
             redirectAttributes.addFlashAttribute("message_type", "success");
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
             redirectAttributes.addFlashAttribute("message", "Erreur: " + e.getMessage());
             redirectAttributes.addFlashAttribute("message_type", "danger");
         }

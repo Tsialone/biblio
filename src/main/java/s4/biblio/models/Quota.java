@@ -9,6 +9,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Quota {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

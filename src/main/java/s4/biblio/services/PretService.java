@@ -1,6 +1,7 @@
 package s4.biblio.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -76,32 +77,41 @@ public class PretService {
         }
         // verification si l'utilisateur est un abonnee
         if (adh_abonnement == null) {
-            throw new Exception("L'adherant " + pret.getAdherant().getId() + " | " + pret.getAdherant().getNom()
-                    + " n'est pas un abonnee");
+            throw new Exception("L'adherant " + pret.getAdherant().getId() + " | " + pret.getAdherant().getNom()+ " n'est pas un abonnee");
         }
 
         // verification si l'exemplaire est disponible
         LocalDate user_date_debut_pret = pret.getDateDebut();
-        Quota user_quota = quotaService.getByCategorieAdherantType(user.getCategorie().getType());
+        Quota user_quota = quotaService.getByCategorieAdherant(user.getCategorie());
         LocalDate user_date_fin_pret = user_date_debut_pret.plusDays(user_quota.getNombreJour());
-        List<Pret> this_exemplaire_pret = getByExmemplaire(user_Exemplaire);
-        for (Pret histo_pret : this_exemplaire_pret) {
-                LocalDate histo_pret_debut_date = histo_pret.getDateDebut();
-                Utilisateur adUtilisateur  = histo_pret.getAdherant();
-                Quota quota = quotaService.getByCategorieAdherantType(adUtilisateur.getCategorie().getType());
-                LocalDate histo_pret_fin_date = histo_pret_debut_date.plusDays(quota.getNombreJour());
-                if (chevauchent(histo_pret_debut_date, histo_pret_fin_date, user_date_debut_pret, user_date_fin_pret)) {
-                    throw new Exception("Cet exemplaire est a ete deja prete");
-                }
+        Pret exemplaire_prete_dispo = estDispo(user_Exemplaire, user_date_debut_pret, user_date_fin_pret);
+        if (exemplaire_prete_dispo != null) {
+            throw new Exception("Cet exemplaire est a ete deja prete par " + exemplaire_prete_dispo.getAdherant().getId());
         }
+
         repository.save(pret);
     }
+
     public static boolean chevauchent(LocalDate a, LocalDate b, LocalDate c, LocalDate d) {
         return !(b.isBefore(c) || d.isBefore(a));
     }
 
     public List<Pret> getByExmemplaire(Exemplaire exemplaire) {
         return this.repository.findByExemplaire(exemplaire);
+    }
+
+    public Pret estDispo(Exemplaire exemplaire, LocalDate date_debut, LocalDate date_fin) throws Exception {
+        List<Pret> this_exemplaire_pret = getByExmemplaire(exemplaire);
+        for (Pret histo_pret : this_exemplaire_pret) {
+            LocalDate histo_pret_debut_date = histo_pret.getDateDebut();
+            Utilisateur adUtilisateur = histo_pret.getAdherant();
+            Quota quota = quotaService.getByCategorieAdherant(adUtilisateur.getCategorie());
+            LocalDate histo_pret_fin_date = histo_pret_debut_date.plusDays(quota.getNombreJour());
+            if (chevauchent(histo_pret_debut_date, histo_pret_fin_date, date_debut, date_fin)) {
+                return histo_pret;
+            }
+        }
+        return null;
     }
     // public List<Categorie> getByType (E_TypeCategorie type){
     // return repository.findByType(type);

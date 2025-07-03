@@ -17,5 +17,5 @@ import s4.biblio.models.Utilisateur;
 
 @Repository
 public interface QuotaRepository extends JpaRepository<Quota, Integer> {
-    Quota findByCategorieAdherantType(E_TypeCategorie type);
+    Quota findByCategorieAdherant(Categorie categorie);
 }

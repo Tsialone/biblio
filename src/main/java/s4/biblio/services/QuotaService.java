@@ -24,8 +24,11 @@ public class QuotaService {
         return repository.findAll();
     }
    
-    public  Quota getByCategorieAdherantType(E_TypeCategorie type){
-        return this.repository.findByCategorieAdherantType(type);
+    public  Quota getByCategorieAdherant(Categorie categorie){
+        Quota quota = this.repository.findByCategorieAdherant(categorie);
+        System.out.println("itoooooooo");
+        System.out.println(quota.getCategorieAdherant().getLibelle());
+        return this.repository.findByCategorieAdherant(categorie);
     };
 
 }
