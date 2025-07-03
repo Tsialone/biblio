@@ -118,7 +118,9 @@ CREATE TABLE reservation (
     id_exemplaire INT , 
     id_adherant INT , 
     date_debut DATE ,
+    id_categorie_pret INT , 
     date_fin DATE,
+    CONSTRAINT fk_categorie_pret_reservation FOREIGN KEY (id_categorie_pret) REFERENCES categorie(id)  ON DELETE CASCADE,
     CONSTRAINT fk_adherant_reservation FOREIGN KEY (id_adherant) REFERENCES utilisateur(id)  ON DELETE CASCADE,
     CONSTRAINT fk_exemplaire_reservation FOREIGN KEY (id_exemplaire) REFERENCES exemplaire(id)  ON DELETE CASCADE
 ) ENGINE=InnoDB;

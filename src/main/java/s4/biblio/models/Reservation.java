@@ -35,6 +35,11 @@ public class Reservation {
     @Column(name = "date_fin")
     private LocalDate dateFin;
 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_categorie")
+    private Categorie categoriePret;
+
     @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY)
     private List<HistoStatut> histoStatuts;
 

@@ -27,6 +27,7 @@
                 <th>#</th>
                 <th>Reference</th>
                 <th>Exemplaire</th>
+                <th>Type de pret</th>
                 <th>Date début</th>
                 <th>Date fin prévue</th>
                 <th>Statut</th>
@@ -45,13 +46,13 @@
                 <td><%= i++ %></td>
                 <td><%= reservation.getExemplaire().getId()%></td>
                 <td><%= reservation.getExemplaire().getLivre().getTitre() %></td>
+                <td><%= reservation.getCategoriePret().getLibelle() %></td>
                 <td><%= reservation.getDateDebut() %></td>
                 <td><%= reservation.getDateFin() %></td>
                 <td><%= reservation.getStatut().getLibelle() %></td>
                 <td>
                     <a href="/reservation/valider?id=<%= reservation.getId() %>" class="btn btn-sm btn-outline-primary">Valider</a>
                     <a href="/reservation/refuser?id=<%= reservation.getId() %>" class="btn btn-sm btn-outline-danger">Annulée</a>
-
                 </td>
 
             </tr>

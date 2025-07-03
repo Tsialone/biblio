@@ -47,6 +47,23 @@ public class ReservationController {
     @Autowired
     private StatutService statutService;
 
+    @GetMapping("valider")
+    public String validerReservation(@RequestParam("id") Integer id , RedirectAttributes redirectAttributes) {
+        Optional<Reservation> reservation = reservationService.getById(id);
+        Statut statut = statutService.getByLibelle("Confirmée");
+        try {
+            // reservationService.saveByForm(form, utilisateur);
+            reservationService.updateStatutReservation(statut, reservation.get());
+            redirectAttributes.addFlashAttribute("message", "Transaction reussi!👌");
+            redirectAttributes.addFlashAttribute("message_type", "success");
+        } catch (Exception e) {
+            // e.printStackTrace();
+            redirectAttributes.addFlashAttribute("message", "Erreur: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("message_type", "danger");
+        }
+        return "redirect:/reservation/admin/list";
+    }
+
     @GetMapping("refuser")
     public String refuserReservation(@RequestParam("id") Integer id , RedirectAttributes redirectAttributes) {
         Optional<Reservation> reservation = reservationService.getById(id);
@@ -76,6 +93,8 @@ public class ReservationController {
         mv.addObject("title", "Reservation");
         mv.addObject("fonctionality", "Demande de reservation de pret");
         mv.addObject("exemplaires", exemplaireService.getAll());
+        mv.addObject("categoriesPret", categorieService.getByType(E_TypeCategorie.pret));
+
         // mv.addObject("utilisateurs",
         // utilisateurService.getByCategorieType(E_TypeCategorie.adherant));
         // mv.addObject("prets", pretService.getByAdherant(utilisateur));

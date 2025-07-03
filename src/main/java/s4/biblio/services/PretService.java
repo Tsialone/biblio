@@ -115,6 +115,10 @@ public class PretService {
         repository.save(pret);
     }
 
+    public void save(Pret pret) {
+        repository.save(pret);
+    }
+
     public static boolean chevauchent(LocalDate a, LocalDate b, LocalDate c, LocalDate d) {
         return !(b.isBefore(c) || d.isBefore(a));
     }

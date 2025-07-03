@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "utilisateur")
@@ -37,6 +39,16 @@ public class Utilisateur {
 
     @OneToMany(mappedBy = "utilisateur", fetch = FetchType.LAZY)
     private List<HistoStatut> histoStatuts;
+
+     public Statut getStatut() {
+        if (!histoStatuts.isEmpty()) {
+            List<HistoStatut> trie  = histoStatuts.stream()
+            .sorted(Comparator.comparing(HistoStatut::getId).reversed())
+            .collect(Collectors.toList());
+            return trie.getFirst().getStatut();
+        }
+        return null;
+    }
 
     
 }

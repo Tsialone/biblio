@@ -1,10 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="s4.biblio.models.Exemplaire" %>
+<%@ page import="s4.biblio.models.Categorie" %>
+
 <%@ page import="java.time.LocalDate" %>
 
 <%
     List<Exemplaire> exemplaires = (List<Exemplaire>) request.getAttribute("exemplaires");
+    List<Categorie> categoriesPret = (List<Categorie>) request.getAttribute("categoriesPret");
+    
     LocalDate today = LocalDate.now();
     LocalDate defaultEnd = today.plusDays(7);
 
@@ -33,6 +37,19 @@
                 <% for (Exemplaire ex : exemplaires) { %>
                     <option value="<%= ex.getId() %>">
                         <%= ex.getLivre().getTitre() %> (ID: <%= ex.getId() %>)
+                    </option>
+                <% } %>
+            </select>
+        </div>
+
+
+        <div class="mb-3">
+            <label for="categoriePretId" class="form-label">Choisir le Type de pret</label>
+            <select name="categoriePret" id="exemplaireId" class="form-select" required>
+                <option value="">-- Sélectionner un type de pret --</option>
+                <% for (Categorie  categ_pret : categoriesPret) { %>
+                    <option value="<%= categ_pret.getId() %>">
+                        <%= categ_pret.getLibelle() %>
                     </option>
                 <% } %>
             </select>
