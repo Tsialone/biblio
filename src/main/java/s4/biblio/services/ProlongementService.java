@@ -1,6 +1,5 @@
 package s4.biblio.services;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,7 @@ import java.util.Optional;
 @Transactional
 public class ProlongementService {
     @Autowired
-    private  ProlongementRepository repository;
+    private ProlongementRepository repository;
     @Autowired
     private QuotaService quotaService;
     @Autowired
@@ -28,11 +27,15 @@ public class ProlongementService {
     private PretService pretService;
     @Autowired
     private AbonnementService abonnementService;
-
+    @Autowired
+    private JourFerieService jourFerieService;
+    @Autowired
+    private PenaliteService jourFerieService;
 
     public Optional<Prolongement> getById(Integer id) {
-            return repository.findById(id);
+        return repository.findById(id);
     }
+
     public void updateStatutProlongement(Statut statut, Prolongement prolongement) throws Exception {
         Pret pret = prolongement.getPret();
         if (statut.getLibelle().equalsIgnoreCase("Annulée")) {
@@ -45,7 +48,9 @@ public class ProlongementService {
         } else if (statut.getLibelle().equalsIgnoreCase("Confirmée")) {
             Utilisateur user = prolongement.getPret().getAdherant();
             Statut user_statut = user.getStatut();
-            Abonnement adh_abonnement = abonnementService.getByAdherantDate(prolongement.getPret().getDateDebut(), user);
+            Quota user_quota = quotaService.getByCategorieAdherant(user.getCategorie());
+            Abonnement adh_abonnement = abonnementService.getByAdherantDate(prolongement.getPret().getDateDebut(),
+                    user);
 
             // si la reservation est deja valider
             if (!prolongement.getStatut().getLibelle().equalsIgnoreCase("En attente")) {
@@ -81,6 +86,11 @@ public class ProlongementService {
                 throw new Exception(
                         "Cet exemplaire est a ete deja prete par " + exemplaire_prete_dispo.getAdherant().getId());
             }
+            // si sur place pas on applique pas le quotas
+            if (pret.getCategorie().getLibelle().equalsIgnoreCase("sur place")) {
+                user_date_fin_pret = pret.getDateDebut();
+            }
+
             // Vérification si le prêt est bien dans la période de validité de l'abonnement
             if (user_date_debut_pret.isBefore(adh_abonnement.getDateDebut())
                     || user_date_fin_pret.isAfter(adh_abonnement.getDateFin())) {
@@ -88,7 +98,38 @@ public class ProlongementService {
                         + "Abonnement valide du " + adh_abonnement.getDateDebut() + " au "
                         + adh_abonnement.getDateFin());
             }
-            pret.setDateFin(prolongement.getNewDateFin());
+            // prendre en compte les jours ferier
+            int total_nbr_jour_pret_ferie = jourFerieService.nbrSautByFerieAndDate(user_date_fin_pret);
+            System.out.println("debugggggggggggggggggggggggggggggg: " + total_nbr_jour_pret_ferie);
+            System.out.println("avant:" + user_date_fin_pret);
+            pret.setDateFin(prolongement.getNewDateFin().plusDays(total_nbr_jour_pret_ferie));
+            // user_date_fin_pret = user_date_fin_pret.plusDays(total_nbr_jour_pret_ferie);
+            System.out.println("apres:" + user_date_fin_pret);
+            // pret.setDateFin(user_date_fin_pret);
+
+            // Vérification si le prêt est bien dans la période de validité de l'abonnement
+            if (pret.getDateDebut().isBefore(adh_abonnement.getDateDebut())
+                    || pret.getDateFin().isAfter(adh_abonnement.getDateFin())) {
+                throw new Exception("Le prêt n'est pas compris dans la période de l'abonnement. "
+                        + "Abonnement valide du " + adh_abonnement.getDateDebut() + " au "
+                        + adh_abonnement.getDateFin());
+            }
+            // verification de nombre de livre deja prise
+            List<Pret> prets_user = pretService.getByAdherant(user);
+            int nbr_pret_effectuer = prets_user.size();
+            // mbola tss penalite
+            int nbr_pret_max = user_quota.getNombreLivres();
+            if (nbr_pret_effectuer + 1 > nbr_pret_max) {
+                throw new Exception("L'adherant a atteint son quotas maximal max: " + nbr_pret_max);
+            }
+
+            // verification si il est penalise
+            List<LocalDate> intervall_peno = penaliteService.getIntervallePenaliteByAdherant(user);
+            if (!intervall_peno.isEmpty()) {
+                if (estDansIntervalle(pret.getDateDebut(), intervall_peno.getFirst(), intervall_peno.getLast())) {
+                    throw new Exception("L'utilsateur est penalise");
+                }
+            }
             HistoStatut histoStatut = new HistoStatut(
                     null,
                     statut,
@@ -102,29 +143,31 @@ public class ProlongementService {
             pretService.save(pret);
         }
     }
-    public void saveByPret (Pret pret) throws Exception 
-    {
-        if  (!getByPret(pret).isEmpty()) {
-            
+
+    public void saveByPret(Pret pret) throws Exception {
+        if (!getByPret(pret).isEmpty()) {
+
             throw new Exception("Vous avez deja prolonger ou demander sur ce pret");
         }
         Utilisateur adherant = pret.getAdherant();
         Quota user_quota = quotaService.getByCategorieAdherant(adherant.getCategorie());
         LocalDate last_date_fin = pret.getDateDebut();
-        LocalDate new_date_fin  =  last_date_fin.plusDays(user_quota.getNombreJour());
-        LocalDate now_date  =  LocalDate.now();
+        LocalDate new_date_fin = last_date_fin.plusDays(user_quota.getNombreJour());
+        LocalDate now_date = LocalDate.now();
 
-        
         Prolongement prolongement = new Prolongement(null, pret, last_date_fin, new_date_fin, now_date, null);
         Statut new_statut = statutService.getByLibelle("En attente");
-        HistoStatut new_histo_statut = new HistoStatut(null, new_statut, now_date, null, adherant, null, null, prolongement);
+        HistoStatut new_histo_statut = new HistoStatut(null, new_statut, now_date, null, adherant, null, null,
+                prolongement);
         repository.save(prolongement);
         histoStatutService.save(new_histo_statut);
 
     }
+
     public List<Prolongement> getByPret(Pret pret) {
         return this.repository.findByPret(pret);
     }
+
     public List<Prolongement> getAll() {
         return repository.findAll();
     }
