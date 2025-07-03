@@ -34,6 +34,9 @@ public class Pret {
     @Column(name = "date_fin")
     private LocalDate dateFin;
 
+    // @Column(name = "date_reprise")
+    // private LocalDate dateReprise;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_categorie")
     private Categorie categorie;

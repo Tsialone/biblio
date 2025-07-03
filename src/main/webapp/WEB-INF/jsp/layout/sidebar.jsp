@@ -19,6 +19,7 @@
       <a href="/pret/form" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Ajout</a>
       <a href="/reservation/admin/list" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Reservation(s)</a>
       <a href="/prolongement/admin/list" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Prolongement(s)</a>
+
     </div>
     <div class="mb-4">
       <h3 class="text-muted text-uppercase small fw-semibold mb-2">Stat(s)</h3>
@@ -29,6 +30,8 @@
      <div class="mb-4">
       <h3 class="text-muted text-uppercase small fw-semibold mb-2">Pret(s)</h3>
       <a href="/pret/list" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Mes prets</a>
+      <a href="/pret/remise/form" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Remise</a>
+
      </div>
      <div class="mb-4">
       <h3 class="text-muted text-uppercase small fw-semibold mb-2">Reservation(s)</h3>

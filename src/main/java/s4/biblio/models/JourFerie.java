@@ -15,6 +15,8 @@ public class JourFerie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
-    private Date date;
+    private Integer jour;
+    private Integer mois;
+
     private String description;
 }
