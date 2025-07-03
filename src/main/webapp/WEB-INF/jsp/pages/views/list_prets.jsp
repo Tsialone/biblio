@@ -19,7 +19,8 @@
                 <th>Exemplaire</th>
                 <th>Catégorie</th>
                 <th>Date début</th>
-                <th>Date fin prevu</th>
+                <th>Date fin prévue</th>
+                <th>Fonctionnalite</th>
             </tr>
         </thead>
         <tbody>
@@ -33,6 +34,10 @@
                 <td><%= pret.getCategorie().getLibelle() %></td>
                 <td><%= pret.getDateDebut() %></td>
                 <td><%= pret.getDateFin() %></td>
+                <td>
+                    <a href="/reservation/pret?id=<%= pret.getId() %>" class="btn btn-sm btn-outline-primary">Réserver</a>
+                    <a href="/prolongement/pret?id=<%= pret.getId() %>" class="btn btn-sm btn-outline-primary">Prolonger</a>
+                </td>
             </tr>
             <%   }
                } else { %>
