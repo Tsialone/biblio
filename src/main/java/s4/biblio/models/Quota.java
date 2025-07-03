@@ -9,6 +9,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Quota {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,10 +18,6 @@ public class Quota {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_categorie_adherant", nullable = false)
     private Categorie categorieAdherant;
-
-     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_categorie_abonnement", nullable = false)
-    private Categorie categorieAbonnement;
 
     @Column(name = "nbr_livre", nullable = false)
     private Integer nombreLivres;

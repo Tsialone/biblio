@@ -11,12 +11,11 @@ import org.springframework.stereotype.Repository;
 import s4.biblio.models.Abonnement;
 import s4.biblio.models.Categorie;
 import s4.biblio.models.E_TypeCategorie;
+import s4.biblio.models.Quota;
 import s4.biblio.models.Statut;
 import s4.biblio.models.Utilisateur;
 
 @Repository
-public interface UtilisateurRepository extends JpaRepository<Utilisateur, Integer> {
-    Utilisateur findByEmailAndMdp(String email, String mdp);
-    Utilisateur findByEmail(String email);
-    List<Utilisateur> findByCategorieType(E_TypeCategorie type);
+public interface QuotaRepository extends JpaRepository<Quota, Integer> {
+    Quota findByCategorieAdherant(Categorie categorie);
 }

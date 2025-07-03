@@ -14,16 +14,18 @@ INSERT INTO statut (libelle, type) VALUES
 ('Suspendu', 'adherant'),
 ('Banni', 'adherant');
 
--- Statuts pour les prêts (type = 'pret')
-INSERT INTO statut (libelle, type) VALUES
-('En cours', 'pret'),
-('Retourné', 'pret'),
-('En retard', 'pret'),
-('Prolongé', 'pret');
+-- -- Statuts pour les prêts (type = 'pret')
+-- INSERT INTO statut (libelle, type) VALUES
+-- ('En cours', 'pret'),
+-- ('Retourné', 'pret'),
+-- ('En retard', 'pret'),
+-- ('Prolongé', 'pret');
 
 -- Statuts pour les réservations (type = 'reservation')
 INSERT INTO statut (libelle, type) VALUES
-('En attente', 'reservation'),
-('Confirmée', 'reservation'),
-('Annulée', 'reservation'),
-('Expirée', 'reservation');
+('En attente', 'reservation_prolongement'),
+('Confirmée', 'reservation_prolongement'),
+('Annulée', 'reservation_prolongement'),
+('Expirée', 'reservation_prolongement');
+
+

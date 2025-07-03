@@ -19,8 +19,8 @@ public class Exemplaire {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_livre")
     private Livre livre;
-    
-    private Date date_acquisition;
+    @Column(name = "date_acquisition")
+    private Date dateAcquisition;
     
     @OneToMany(mappedBy = "exemplaire", fetch = FetchType.LAZY)
     private List<Pret> prets;

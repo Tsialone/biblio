@@ -5,42 +5,49 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "utilisateur")
+@Table(name = "prolongement")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Utilisateur {
+public class Prolongement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String nom;
-    private String prenom;
-    private String email;
-    private String mdp;
-    private String tel;
-    private String adresse;
-    private LocalDate dateNaissance;
-
+    
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_categorie")
-    private Categorie categorie;
+    @JoinColumn(name = "id_pret")
+    private Pret pret;
 
-    @OneToMany(mappedBy = "adherant", fetch = FetchType.LAZY)
-    private List<Abonnement> abonnements;
+    @Column(name = "last_date_fin")
+    private LocalDate lastDateFin;
 
-    @OneToMany(mappedBy = "adherant", fetch = FetchType.LAZY)
-    private List<Pret> prets;
+    @Column(name = "new_date_fin")
+    private LocalDate newDateFin;
 
-    @OneToMany(mappedBy = "utilisateur", fetch = FetchType.LAZY)
+
+    @Column(name = "created")
+    private LocalDate created;
+
+
+
+    // @ManyToOne(fetch = FetchType.LAZY)
+    // @JoinColumn(name = "id_categorie")
+    // private Categorie categoriePret;
+
+    @OneToMany(mappedBy = "prolongement", fetch = FetchType.LAZY)
     private List<HistoStatut> histoStatuts;
 
-     public Statut getStatut() {
+
+    
+    public Statut getStatut() {
         if (!histoStatuts.isEmpty()) {
             List<HistoStatut> trie  = histoStatuts.stream()
             .sorted(Comparator.comparing(HistoStatut::getId).reversed())
@@ -50,5 +57,4 @@ public class Utilisateur {
         return null;
     }
 
-    
 }

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import s4.biblio.form.UtilisateurForm;
 import s4.biblio.models.Abonnement;
 import s4.biblio.models.E_Abonnement;
+import s4.biblio.models.E_TypeCategorie;
 import s4.biblio.models.E_TypeStatut;
 import s4.biblio.models.HistoStatut;
 import s4.biblio.models.Statut;
@@ -55,7 +56,7 @@ public class UtilisateurService {
        if (this.getByEmail(utilisateur.getEmail()) != null) {
            throw new Exception("Email deja utiliser!");
        }
-        HistoStatut histoStatut = new HistoStatut(null, statut, LocalDate.now(), null, utilisateur, null, null, null);
+        HistoStatut histoStatut = new HistoStatut(null, statut, LocalDate.now(), null, utilisateur, null, null , null);
         this.repository.save(utilisateur);
         this.histoStatutService.save(histoStatut);
     }
@@ -77,4 +78,8 @@ public class UtilisateurService {
         }
         return E_Abonnement.en_cours;
     } 
+
+    public List<Utilisateur> getByCategorieType (E_TypeCategorie e_TypeCategorie) {
+        return repository.findByCategorieType(e_TypeCategorie);
+    }  
 }

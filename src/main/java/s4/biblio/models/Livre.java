@@ -2,6 +2,8 @@ package s4.biblio.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +19,7 @@ public class Livre {
     private Integer id;
     
     private String titre;
-    private Date date_publication;
+    private LocalDate date_publication;
     private String description;
     private Integer age;
     

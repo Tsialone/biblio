@@ -15,7 +15,7 @@ CREATE TABLE categorie (
 CREATE TABLE statut (
     id INT PRIMARY KEY AUTO_INCREMENT,
     libelle VARCHAR(255) NOT NULL,
-    type ENUM('exemplaire', 'adherant' , 'pret' ,'reservation' ,'penalite') NOT NULL
+    type ENUM('exemplaire', 'adherant','reservation_prolongement' ,'penalite') NOT NULL
 ) ENGINE=InnoDB;
 
 CREATE TABLE utilisateur (
@@ -38,14 +38,16 @@ CREATE TABLE histo_statut (
 
     id_exemplaire INT,
     id_utilisateur INT ,
-    id_pret INT , 
+    -- id_pret INT , 
     id_reservation INT ,
     id_penalite INT , 
+    id_prolongement INT ,
 
     date_debut DATE ,
     CONSTRAINT fk_exemplaire_histo_statut FOREIGN KEY (id_exemplaire) REFERENCES exemplaire(id)  ON DELETE CASCADE,
     CONSTRAINT fk_utilisateur_histo_statut FOREIGN KEY (id_utilisateur) REFERENCES utilisateur(id)  ON DELETE CASCADE,
-    CONSTRAINT fk_pret_histo_statut FOREIGN KEY (id_pret) REFERENCES pret(id)  ON DELETE CASCADE,
+    CONSTRAINT fk_prolongement_histo_statut FOREIGN KEY (id_prolongement) REFERENCES prolongement(id)  ON DELETE CASCADE,
+    -- CONSTRAINT fk_pret_histo_statut FOREIGN KEY (id_pret) REFERENCES pret(id)  ON DELETE CASCADE,
     CONSTRAINT fk_reservation_histo_statut FOREIGN KEY (id_reservation) REFERENCES reservation(id)  ON DELETE CASCADE,
     CONSTRAINT fk_penalite_histo_statut FOREIGN KEY (id_penalite) REFERENCES penalite(id)  ON DELETE CASCADE,
     CONSTRAINT fk_statut_histo_statut FOREIGN KEY (id_statut) REFERENCES statut(id)  ON DELETE CASCADE
@@ -104,7 +106,8 @@ CREATE TABLE pret (
     id_exemplaire  INT ,
     id_adherant INT , 
     date_debut DATE , 
-    date_fin DATE ,
+    date_fin DATE , 
+
     id_categorie INT , 
     CONSTRAINT fk_exemplaire_pret FOREIGN KEY (id_exemplaire) REFERENCES exemplaire(id)  ON DELETE CASCADE,
     CONSTRAINT fk_categorie_pret FOREIGN KEY (id_categorie) REFERENCES categorie(id)  ON DELETE CASCADE,
@@ -114,10 +117,26 @@ CREATE TABLE pret (
 -- reservation d'un pret
 CREATE TABLE reservation (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    id_pret INT , 
-    date_demande DATE ,
-    CONSTRAINT fk_pret FOREIGN KEY (id_pret) REFERENCES pret(id)  ON DELETE CASCADE
+    id_exemplaire INT , 
+    id_adherant INT , 
+    date_debut DATE ,
+    id_categorie_pret INT , 
+    date_fin DATE,
+    CONSTRAINT fk_categorie_pret_reservation FOREIGN KEY (id_categorie_pret) REFERENCES categorie(id)  ON DELETE CASCADE,
+    CONSTRAINT fk_adherant_reservation FOREIGN KEY (id_adherant) REFERENCES utilisateur(id)  ON DELETE CASCADE,
+    CONSTRAINT fk_exemplaire_reservation FOREIGN KEY (id_exemplaire) REFERENCES exemplaire(id)  ON DELETE CASCADE
 ) ENGINE=InnoDB;
+
+-- prolongemen
+CREATE TABLE prolongement (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_pret INT NOT NULL,
+    last_date_fin DATE NOT NULL,
+    new_date_fin DATE NOT NULL,
+    created DATE NOT NULL,
+    CONSTRAINT fk_pret_prolongement FOREIGN KEY (id_pret) REFERENCES pret(id) ON DELETE CASCADE
+);
+
 
 -- penalite 
 CREATE TABLE penalite (
@@ -140,9 +159,8 @@ CREATE TABLE jour_ferie (
 CREATE TABLE quota (
     id INT PRIMARY KEY AUTO_INCREMENT,
     id_categorie_adherant INT ,
-    id_categorie_abonnement INT ,
     nbr_livre INT , 
     nbr_jour INT,
-    CONSTRAINT fk_categorie_adherant_quota FOREIGN KEY (id_categorie_adherant) REFERENCES categorie(id)  ON DELETE CASCADE,
-    CONSTRAINT fk_categorie_abonnement_quota FOREIGN KEY (id_categorie_abonnement) REFERENCES categorie(id)  ON DELETE CASCADE
+    CONSTRAINT fk_categorie_adherant_quota FOREIGN KEY (id_categorie_adherant) REFERENCES categorie(id)  ON DELETE CASCADE
 );
+
