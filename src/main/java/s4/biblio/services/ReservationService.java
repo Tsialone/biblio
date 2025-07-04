@@ -10,6 +10,7 @@ import s4.biblio.models.Categorie;
 import s4.biblio.models.E_TypeCategorie;
 import s4.biblio.models.Exemplaire;
 import s4.biblio.models.HistoStatut;
+import s4.biblio.models.Penalite;
 import s4.biblio.models.Pret;
 import s4.biblio.models.Quota;
 import s4.biblio.models.Reservation;
@@ -142,12 +143,17 @@ public class ReservationService {
                 throw new Exception("L'adherant a atteint son quotas maximal max: " + nbr_pret_max);
             }
             // verification si il est penalise
-            List<LocalDate> intervall_peno = penaliteService.getIntervallePenaliteByAdherant(user);
-            if (!intervall_peno.isEmpty()) {
-                if (pretService.estDansIntervalle(pret.getDateDebut(), intervall_peno.getFirst(),
-                        intervall_peno.getLast())) {
-                    throw new Exception("L'utilsateur est penalise");
-                }
+              Penalite penalite = penaliteService.estDansUnePenalite(user_date_debut_pret, user_date_fin_pret, user);
+            // List<LocalDate> intervall_peno =
+            // penaliteService.getIntervallePenaliteByAdherant(user);
+            // if (!intervall_peno.isEmpty()) {
+            // if (pretService. estDansIntervalle(user_date_debut_pret,
+            // intervall_peno.getFirst(), intervall_peno.getLast())) {
+            // throw new Exception("L'utilsateur est penalise");
+            // }
+            // }
+            if (penalite != null) {
+                throw new Exception("L'utilsateur est penalise: " + penalite.getDateDebut() + " a " + penalite.getDateFin());
             }
             histoStatutService.save(histoStatut);
             pretService.save(pret);
