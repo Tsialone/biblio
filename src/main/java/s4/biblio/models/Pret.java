@@ -44,8 +44,11 @@ public class Pret {
     // @OneToMany(mappedBy = "pret", fetch = FetchType.LAZY)
     // private List<Reservation> reservations;
 
-    @OneToMany(mappedBy = "pret", fetch = FetchType.LAZY)
-    private List<Penalite> penalites;
+    @OneToOne(mappedBy = "pret", fetch = FetchType.LAZY)
+    private Penalite penalites;
+
+    @OneToOne(mappedBy = "pret", fetch = FetchType.LAZY)
+    private Remise remise;
 
     @OneToMany(mappedBy = "pret", fetch = FetchType.LAZY)
     private List<Prolongement> prolongements;

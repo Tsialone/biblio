@@ -116,6 +116,7 @@ public class ReservationService {
                     user_date_fin_pret,
                     reservation.getCategoriePret(),
                     null,
+                    null,
                     null);
 
             // prendre en compte les jours ferier

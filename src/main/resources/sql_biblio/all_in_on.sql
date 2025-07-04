@@ -165,6 +165,13 @@ CREATE TABLE jour_ferie (
     description TEXT
 ) ENGINE=InnoDB;
 
+-- remise
+CREATE TABLE remise (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_pret INT , 
+    date_remise DATE,
+    CONSTRAINT fk_pret_remise FOREIGN KEY (id_pret) REFERENCES pret(id)  ON DELETE CASCADE
+);
 
 CREATE TABLE quota (
     id INT PRIMARY KEY AUTO_INCREMENT,

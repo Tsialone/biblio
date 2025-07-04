@@ -23,7 +23,7 @@
     </div>
     <div class="mb-4">
       <h3 class="text-muted text-uppercase small fw-semibold mb-2">Stat(s)</h3>
-      <a href="/tickets/performances" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Dashboard</a>
+      <a href="/dashboard/stats" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Dashboard</a>
     </div>
       <%-- <a href="/user/client/filter" class="d-block p-2 rounded text-decoration-none text-body hover-bg-light">Prolonge</a> --%>
      <% } else { %>

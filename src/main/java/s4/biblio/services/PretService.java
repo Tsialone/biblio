@@ -16,6 +16,7 @@ import s4.biblio.models.HistoStatut;
 import s4.biblio.models.Penalite;
 import s4.biblio.models.Pret;
 import s4.biblio.models.Quota;
+import s4.biblio.models.Remise;
 import s4.biblio.models.Statut;
 import s4.biblio.models.Utilisateur;
 import s4.biblio.repositories.CategorieRepository;
@@ -42,7 +43,8 @@ public class PretService {
     private JourFerieService jourFerieService;
     @Autowired
     private PenaliteService penaliteService;
-
+    @Autowired
+    private RemiseService remiseService;
     public Optional<Pret> getById(Integer id_pret) {
         return repository.findById(id_pret);
     }
@@ -60,6 +62,11 @@ public class PretService {
         LocalDate pret_date_fin = pret.getDateFin();
         int nbr_jour = 2;
         Penalite penalite = new Penalite(null, pret, pret_date_fin, pret_date_fin.plusDays(nbr_jour));
+        Remise his_remise_pret = remiseService.getByPret(pret);
+        if (his_remise_pret != null) {
+            throw new Exception("Vous avez deja retourner cet exemplaire");
+
+        }
         if (form.getDateRemise() == null) {
             penaliteService.save(penalite);
             throw new Exception("Vous avez ete penalise cause de non remise");
@@ -73,6 +80,8 @@ public class PretService {
             penaliteService.save(penalite);
             throw new Exception("Vous avez ete penalise cause de retard");
         }
+        Remise remise = new Remise(null, pret , form.getDateRemise());
+        remiseService.save(remise);
         // if (pret.getDateReprise() != null)
         // {
         // }
@@ -87,6 +96,7 @@ public class PretService {
                 form.getDateDebut(),
                 null,
                 form.getCategorie(),
+                null,
                 null,
                 null);
 
