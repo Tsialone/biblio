@@ -21,6 +21,7 @@ import s4.biblio.services.UtilisateurService;
 @RequestMapping("/abonnement")
 public class AbonnementController {
 
+    @Autowired
     private final AbonnementService abonnementService;
 
     @Autowired

@@ -90,7 +90,6 @@ CREATE TABLE exemplaire (
     id INT PRIMARY KEY AUTO_INCREMENT,
     id_livre INT , 
     date_acquisition DATE ,
-    age_min INT ,
     CONSTRAINT fk_livre_exemplaire FOREIGN KEY (id_livre) REFERENCES livre(id)  ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
@@ -252,13 +251,13 @@ INSERT INTO auteur (nom, prenom) VALUES
 ('Tolkien', 'J.R.R.'),
 ('Lewis', 'C.S.');
 -- livre 
-INSERT INTO livre (titre, date_publication, description) VALUES
-('Les Misérables', '1862-01-01', 'Roman historique sur la rédemption'),
-('Le Comte de Monte-Cristo', '1844-01-01', 'Aventure et vengeance'),
-('La Mare au Diable', '1846-01-01', 'Roman champêtre'),
-('Harry Potter et la Pierre Philosophale', '1997-06-26', 'Premier tome de la saga'),
-('Le Hobbit', '1937-09-21', 'Prélude au Seigneur des Anneaux'),
-('Le Lion, la Sorcière et l''Armoire magique', '1950-10-16', 'Roman fantasy pour enfants');
+INSERT INTO livre (titre, date_publication, age ,description) VALUES
+('Les Misérables', '1862-01-01', 12,'Roman historique sur la rédemption'),
+('Le Comte de Monte-Cristo','1844-01-01',10  , 'Aventure et vengeance'),
+('La Mare au Diable', '1846-01-01',8 ,'Roman champêtre'),
+('Harry Potter et la Pierre Philosophale', '1997-06-26', 60, 'Premier tome de la saga'),
+('Le Hobbit', '1937-09-21', 20 ,'Prélude au Seigneur des Anneaux'),
+('Le Lion, la Sorcière et l''Armoire magique', '1950-10-16',4 ,'Roman fantasy pour enfants');
 
 -- Associations pour les auteurs francophones
 INSERT INTO livre_auteur (id_livre, id_auteur) VALUES
@@ -302,31 +301,31 @@ INSERT INTO livre_categorie (id_livre, id_categorie) VALUES
 (6, 6);  -- Jeunesse
 
 -- Exemplaires pour 'Les Misérables' (livre_id = 1)
-INSERT INTO exemplaire (id_livre, date_acquisition , age_min) VALUES
-(1, '2020-01-15' , 12),  -- Exemplaire 1
-(1, '2020-01-15' , 10),  -- Exemplaire 2
-(1, '2021-03-10' , 9);  -- Exemplaire 3
+INSERT INTO exemplaire (id_livre, date_acquisition ) VALUES
+(1, '2020-01-15' ),  -- Exemplaire 1
+(1, '2020-01-15' ),  -- Exemplaire 2
+(1, '2021-03-10' );  -- Exemplaire 3
 
 -- Exemplaires pour 'Le Comte de Monte-Cristo' (livre_id = 2)
-INSERT INTO exemplaire (id_livre, date_acquisition , age_min) VALUES
-(2, '2019-11-05' , 20),
-(2, '2022-02-20' , 7);
+INSERT INTO exemplaire (id_livre, date_acquisition ) VALUES
+(2, '2019-11-05' ),
+(2, '2022-02-20' );
 
 -- Exemplaires pour 'Harry Potter' (livre_id = 4)
-INSERT INTO exemplaire (id_livre, date_acquisition , age_min) VALUES
-(4, '2018-06-12', 4),  -- Exemplaire 1
-(4, '2020-10-30' , 5),  -- Exemplaire 2
-(4, '2020-10-30',14),  -- Exemplaire 3
-(4, '2023-01-15' , 12);  -- Exemplaire 4
+INSERT INTO exemplaire (id_livre, date_acquisition ) VALUES
+(4, '2018-06-12'),  -- Exemplaire 1
+(4, '2020-10-30'),  -- Exemplaire 2
+(4, '2020-10-30'),  -- Exemplaire 3
+(4, '2023-01-15');  -- Exemplaire 4
 
 -- Exemplaire pour 'Le Hobbit' (livre_id = 5)
-INSERT INTO exemplaire (id_livre, date_acquisition , age_min) VALUES
-(5, '2017-09-22'  ,3);
+INSERT INTO exemplaire (id_livre, date_acquisition ) VALUES
+(5, '2017-09-22' );
 
 -- Exemplaires pour 'Le Lion, la Sorcière...' (livre_id = 6)
-INSERT INTO exemplaire (id_livre, date_acquisition , age_min) VALUES
-(6, '2019-04-18' , 4),
-(6, '2021-12-05' , 9);
+INSERT INTO exemplaire (id_livre, date_acquisition ) VALUES
+(6, '2019-04-18' ),
+(6, '2021-12-05');
 
 INSERT INTO quota (id_categorie_adherant , nbr_livre, nbr_jour ) VALUES (7 , 12  , 1);
 INSERT INTO quota (id_categorie_adherant , nbr_livre, nbr_jour ) VALUES (8  , 2 , 3);
@@ -343,3 +342,13 @@ INSERT INTO jour_ferie (jour, mois, description) VALUES
 (15, 8, 'Assomption'),
 (1, 11, 'Toussaint'),
 (25, 12, 'Noël');
+
+
+-- nbr emprun par livre
+CREATE OR REPLACE VIEW v_exemplaire_emprunt AS
+SELECT 
+    e.id AS id_exemplaire,
+    COUNT(p.id) AS nbr_emprunt
+FROM exemplaire e
+LEFT JOIN pret p ON p.id_exemplaire = e.id
+GROUP BY e.id;

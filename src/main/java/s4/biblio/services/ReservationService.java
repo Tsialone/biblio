@@ -74,9 +74,9 @@ public class ReservationService {
                 }
             }
             // verification de l'age de l'adherant
-            if (user_Exemplaire.getAgeMin() > user.getAge()) {
+            if (user_Exemplaire.getLivre().getAge() > user.getAge()) {
                 throw new Exception("Les adherants d'age " + user.getAge() + " ne sont pas autorise, require "
-                        + user_Exemplaire.getAgeMin());
+                        + user_Exemplaire.getLivre().getAge());
             }
             // verification si l'utilisateur est un abonnee
             if (adh_abonnement == null) {

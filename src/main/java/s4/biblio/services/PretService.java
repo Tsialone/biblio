@@ -23,6 +23,8 @@ import s4.biblio.repositories.CategorieRepository;
 import s4.biblio.repositories.PretRepository;
 
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,7 +62,8 @@ public class PretService {
     public void saveByRemiseForm(RemiseForm form) throws Exception {
         Pret pret = form.getPret();
         LocalDate pret_date_fin = pret.getDateFin();
-        int nbr_jour = 2;
+
+        int nbr_jour =  (int) ChronoUnit.DAYS.between(pret_date_fin, form.getDateRemise());
         Penalite penalite = new Penalite(null, pret, pret_date_fin, pret_date_fin.plusDays(nbr_jour));
         Remise his_remise_pret = remiseService.getByPret(pret);
         if (his_remise_pret != null) {
@@ -73,12 +76,12 @@ public class PretService {
         }
         if (form.getDateRemise().isBefore(pret.getDateDebut())) {
             // penaliteService.save(penalite);
-            throw new Exception("La remise doit etre dans le pret au moins");
+            throw new Exception("La remise doit etre dans le pret au moins entre [" + pret.getDateDebut() + " et " + pret.getDateFin() + "]");
         }
         // ato ilay penalite
         if (form.getDateRemise().isAfter(pret.getDateFin())) {
             penaliteService.save(penalite);
-            throw new Exception("Vous avez ete penalise cause de retard");
+            throw new Exception("Vous avez ete penalise cause de retard, nbr_jours: " + nbr_jour);
         }
         Remise remise = new Remise(null, pret , form.getDateRemise());
         remiseService.save(remise);
@@ -115,9 +118,9 @@ public class PretService {
             throw new Exception("Exemplaire non trouver");
         }
         // verification de l'age de l'adherant
-        if (user_Exemplaire.getAgeMin() > user.getAge()) {
+        if (user_Exemplaire.getLivre().getAge() > user.getAge()) {
             throw new Exception("Les adherants d'age " + user.getAge() + " ne sont pas autorise, require "
-                    + user_Exemplaire.getAgeMin());
+                    + user_Exemplaire.getLivre().getAge());
         }
         // verification si l'utilisateur est es actif
         if (current_histo_statut == null) {
@@ -172,7 +175,7 @@ public class PretService {
         int nbr_pret_effectuer = prets_user.size();
         // mbola tss penalite
         int nbr_pret_max = user_quota.getNombreLivres();
-        if (nbr_pret_effectuer + 1 > nbr_pret_max) {
+        if (nbr_pret_effectuer  >= nbr_pret_max) {
             throw new Exception("L'adherant a atteint son quotas maximal max: " + nbr_pret_max);
         }
         // verification si il est penalise
