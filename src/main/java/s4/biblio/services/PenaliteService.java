@@ -24,6 +24,18 @@ public class PenaliteService {
     @Autowired
     private PenaliteRepository repository;
 
+    public Penalite estDansUnePenalite(LocalDate debut, LocalDate fin, Utilisateur utilisateur) {
+        for (Penalite penalite : getAll()) {
+            if (penalite.getPret().getAdherant().getId() == utilisateur.getId()) {
+                if (PretService.chevauchent(debut, fin, penalite.getDateDebut(), penalite.getDateFin())) {
+                    return penalite;
+                }
+            }
+
+        }
+        return null;
+    }
+
     public List<LocalDate> getIntervallePenaliteByAdherant(Utilisateur adherant) {
         List<Penalite> penalites = getByPretAdherant(adherant);
 
