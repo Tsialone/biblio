@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import s4.biblio.models.Categorie;
 import s4.biblio.models.E_TypeCategorie;
 import s4.biblio.models.Penalite;
+import s4.biblio.models.Pret;
 import s4.biblio.models.Utilisateur;
 
 @Repository
@@ -30,4 +31,6 @@ public interface PenaliteRepository extends JpaRepository<Penalite, Integer> {
         WHERE date_fin IS NOT NULL AND date_debut IS NOT NULL
     """, nativeQuery = true)
     Double getMoyenneDureePenaliteEnJours();
+
+    Penalite findByPret (Pret  pret);
 }

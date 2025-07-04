@@ -71,6 +71,11 @@ public class PretService {
         int nbr_jour =  (int) ChronoUnit.DAYS.between(pret_date_fin, form.getDateRemise());
         Penalite penalite = new Penalite(null, pret, pret_date_fin, pret_date_fin.plusDays(nbr_jour));
         Remise his_remise_pret = remiseService.getByPret(pret);
+        Penalite his_penalite = penaliteService.getByPret(pret);
+        if  (his_penalite != null) {
+            throw new Exception("Vous avez deja retourner cet exemplaire avec penalite en plus");
+
+        }
         if (his_remise_pret != null) {
             throw new Exception("Vous avez deja retourner cet exemplaire");
 

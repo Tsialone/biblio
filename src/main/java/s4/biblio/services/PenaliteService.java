@@ -8,6 +8,7 @@ import s4.biblio.models.Categorie;
 import s4.biblio.models.E_TypeCategorie;
 import s4.biblio.models.HistoStatut;
 import s4.biblio.models.Penalite;
+import s4.biblio.models.Pret;
 import s4.biblio.models.Utilisateur;
 import s4.biblio.repositories.CategorieRepository;
 import s4.biblio.repositories.PenaliteRepository;
@@ -24,6 +25,9 @@ public class PenaliteService {
     @Autowired
     private PenaliteRepository repository;
 
+    public Penalite getByPret (Pret pret) {
+        return repository.findByPret(pret);
+    }
     public Double getMoyenneDureePenaliteEnJours () {
         return repository.getMoyenneDureePenaliteEnJours();
     }
