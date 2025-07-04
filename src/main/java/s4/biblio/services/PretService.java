@@ -47,6 +47,11 @@ public class PretService {
     private PenaliteService penaliteService;
     @Autowired
     private RemiseService remiseService;
+
+
+    public Double getDureeMoyennePret () {
+        return repository.getDureeMoyennePret();
+    }
     public Optional<Pret> getById(Integer id_pret) {
         return repository.findById(id_pret);
     }

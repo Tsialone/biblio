@@ -352,3 +352,16 @@ SELECT
 FROM exemplaire e
 LEFT JOIN pret p ON p.id_exemplaire = e.id
 GROUP BY e.id;
+
+
+-- nbr de penalite  utilisateur
+CREATE VIEW vue_stat_penalite_par_adherant AS
+SELECT 
+    p.id_adherant AS adherant_id,
+    u.nom AS nom_adherant,
+    u.prenom AS prenom_adherant,
+    COUNT(*) AS total_penalites
+FROM penalite pen
+JOIN pret p ON pen.id_pret = p.id
+JOIN utilisateur u ON p.id_adherant = u.id
+GROUP BY p.id_adherant, u.nom, u.prenom;

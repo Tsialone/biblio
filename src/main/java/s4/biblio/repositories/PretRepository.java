@@ -22,4 +22,7 @@ import s4.biblio.models.Utilisateur;
 public interface PretRepository extends JpaRepository<Pret, Integer> {
     List<Pret> findByExemplaire(Exemplaire exemplaire);
     List<Pret> findByAdherant(Utilisateur adherant);
+    @Query("SELECT AVG(DATEDIFF(p.dateFin, p.dateDebut)) FROM Pret p")
+    Double getDureeMoyennePret();
+
 }

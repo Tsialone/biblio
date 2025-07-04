@@ -24,6 +24,12 @@ public class PenaliteService {
     @Autowired
     private PenaliteRepository repository;
 
+    public Double getMoyenneDureePenaliteEnJours () {
+        return repository.getMoyenneDureePenaliteEnJours();
+    }
+    public int  countUtilisateursAvecPenalite (){
+        return repository.countUtilisateursAvecPenalite();
+    }
     public Penalite estDansUnePenalite(LocalDate debut, LocalDate fin, Utilisateur utilisateur) {
         for (Penalite penalite : getAll()) {
             if (penalite.getPret().getAdherant().getId() == utilisateur.getId()) {
